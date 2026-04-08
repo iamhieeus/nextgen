@@ -1,0 +1,42 @@
+<svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    logo-v2: Dấu ấn "CẤM / ĐỊA" cách tân
+    Hai dòng chữ Việt xếp dọc như chữ Nho, bên trong khung dấu ấn đỏ.
+    Hình thức: phong cách triện ấn (篆刻) nhưng dùng tiếng Việt.
+  -->
+
+  <!-- Nền ấn đỏ -->
+  <rect width="44" height="44" rx="6" fill="#e5353e"/>
+
+  <!-- Viền ngoài — đặc trưng dấu ấn truyền thống -->
+  <rect x="2" y="2" width="40" height="40" rx="4.5"
+        fill="none" stroke="rgba(255,255,255,0.32)" stroke-width="1.4"/>
+
+  <!-- Viền trong (hiệu ứng khung đôi) -->
+  <rect x="4.5" y="4.5" width="35" height="35" rx="2.5"
+        fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.8"/>
+
+  <!-- Gạch ngang giữa — ngăn cách "CẤM" và "ĐỊA" như bố cục chữ Nho -->
+  <line x1="8" y1="22" x2="36" y2="22"
+        stroke="rgba(255,255,255,0.32)" stroke-width="0.9"/>
+
+  <!-- Dấu góc nhỏ (trang trí triện ấn) -->
+  <path d="M5 11 L5 5 L11 5"   fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M39 11 L39 5 L33 5" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M5 33 L5 39 L11 39" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M39 33 L39 39 L33 39" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="0.8" stroke-linecap="round"/>
+
+  <!-- CẤM — nửa trên -->
+  <text x="22" y="13.5"
+        text-anchor="middle" dominant-baseline="central"
+        fill="white"
+        font-family="Georgia, 'Palatino Linotype', 'Book Antiqua', Palatino, serif"
+        font-size="13.5" font-weight="700" letter-spacing="2">CẤM</text>
+
+  <!-- ĐỊA — nửa dưới -->
+  <text x="22" y="31"
+        text-anchor="middle" dominant-baseline="central"
+        fill="white"
+        font-family="Georgia, 'Palatino Linotype', 'Book Antiqua', Palatino, serif"
+        font-size="13.5" font-weight="700" letter-spacing="2">ĐỊA</text>
+</svg>

@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cấm Địa – Đọc Truyện Online Miễn Phí</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      /* ── QIDIAN-STYLE PALETTE ── */
+      --ac:      #e5353e;   /* đỏ primary */
+      --ac-dk:   #b82830;   /* đỏ đậm */
+      --ac-lt:   #fff0f0;   /* đỏ rất nhạt / highlight bg */
+      --bg:      #f4f4f4;   /* nền xám nhẹ */
+      --white:   #ffffff;
+      --panel:   #ffffff;
+      --panel-hd:#fff5f5;   /* panel header đỏ rất nhạt */
+      --border:  #e5e5e5;
+      --border-dk:#d0d0d0;
+      --text:    #333333;
+      --text-sub:#666666;
+      --text-muted:#999999;
+      --hdr:     #ffffff;   /* header trắng */
+      --nav:     #3d3d3d;   /* nav xám đậm */
+      --w: 1200px;
+    }
+
+    body { font-family: 'Be Vietnam Pro', "Segoe UI", Arial, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: var(--ac); }
+    .w { width: var(--w); margin: 0 auto; }
+
+    /* ── TOP BAR ── */
+    .top-bar { background: #2a2a2a; color: #999; font-size: 12px; height: 30px; display: flex; align-items: center; }
+    .top-bar .w { display: flex; justify-content: space-between; align-items: center; }
+    .top-bar a { color: #999; }
+    .top-bar a:hover { color: #fff; }
+    .top-bar .sep { color: #555; margin: 0 5px; }
+
+    /* ── HEADER ── */
+    header { background: var(--hdr); border-bottom: 2px solid var(--ac); height: 64px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+    header .w { display: flex; align-items: center; gap: 20px; height: 100%; }
+    .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .logo-txt { font-size: 23px; font-weight: 900; color: var(--ac); letter-spacing: -.5px; line-height: 1.15; }
+    .logo-txt sub { font-size: 10px; font-weight: 400; color: #aaa; display: block; margin-top: 2px; letter-spacing: .3px; font-style: normal; }
+    .search-wrap { flex: 1; max-width: 500px; }
+    .search-bar { display: flex; border: 2px solid var(--ac); overflow: hidden; border-radius: 3px; height: 40px; }
+    .search-bar input { flex: 1; border: none; outline: none; padding: 0 14px; font-size: 14px; background: #fff; color: #333; }
+    .search-bar input::placeholder { color: #bbb; }
+    .search-bar button { background: var(--ac); color: #fff; border: none; padding: 0 22px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; transition: background .15s; }
+    .search-bar button:hover { background: var(--ac-dk); }
+    .header-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; flex-shrink: 0; }
+    .header-actions a { font-size: 13px; color: var(--text-sub); }
+    .header-actions a:hover { color: var(--ac); }
+    .btn-login { border: 1px solid #ddd; padding: 8px 18px; border-radius: 3px; }
+    .btn-reg { background: var(--ac); color: #fff !important; padding: 8px 18px; border-radius: 3px; font-weight: 600; }
+    .btn-reg:hover { background: var(--ac-dk) !important; }
+
+    /* ── GENRE NAV ── */
+    .genre-nav { background: var(--nav); position: sticky; top: 0; z-index: 100; }
+    .genre-nav .w { display: flex; align-items: center; overflow: hidden; }
+    .genre-nav a { color: rgba(255,255,255,.8); font-size: 13px; padding: 0 13px; height: 38px; display: flex; align-items: center; white-space: nowrap; border-right: 1px solid rgba(255,255,255,.08); transition: all .15s; }
+    .genre-nav a:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .genre-nav a.active { background: var(--ac); color: #fff; font-weight: 600; }
+    .genre-nav .genre-more { margin-left: auto; border-left: 1px solid rgba(255,255,255,.12); border-right: none; background: rgba(229,53,62,.25); color: #ffaaaa; }
+    .genre-nav .genre-more:hover { background: var(--ac); color: #fff; }
+
+    /* ── LAYOUT ── */
+    .main { padding: 12px 0 28px; }
+    .main .w { display: flex; gap: 14px; align-items: flex-start; }
+    .content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+    .sidebar { width: 252px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px;  }
+
+    /* ── PANEL ── */
+    .panel { background: var(--panel); border: 1px solid var(--border); }
+
+    /* ── SECTION HEADER ── */
+    .sec-hd { display: flex; align-items: center; gap: 8px; padding: 10px 14px 0; margin-bottom: 10px; }
+    .sec-hd h2 { font-size: 15px; font-weight: 700; border-left: 3px solid var(--ac); padding-left: 8px; line-height: 1.2; flex: 1; }
+    .sec-hd .tabs { display: flex; }
+    .sec-hd .tab { font-size: 12px; color: var(--text-muted); padding: 2px 8px; cursor: pointer; }
+    .sec-hd .tab:hover { color: var(--ac); }
+    .sec-hd .tab.active { color: var(--ac); border-bottom: 1px solid var(--ac); }
+    .sec-hd .more { font-size: 12px; color: var(--text-muted); white-space: nowrap; margin-left: auto; }
+    .sec-hd .more:hover { color: var(--ac); }
+
+    /* ── SLIDER ── */
+    .top-zone { display: flex; gap: 12px; align-items: stretch; }
+    .slider-wrap { position: relative; width: 570px; flex-shrink: 0; min-height: 268px; overflow: hidden; background: #111; }
+    .slide { position: absolute; inset: 0; display: flex; opacity: 0; transition: opacity .5s; }
+    .slide.active { opacity: 1; }
+    .slide-bg-img { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 90px; }
+    .slide-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.3) 55%, transparent 100%); }
+    .slide-body { position: relative; z-index: 2; margin-top: auto; padding: 14px 18px; }
+    .slide-tags { display: flex; gap: 5px; margin-bottom: 6px; }
+    .slide-tag { font-size: 11px; background: var(--ac); color: #fff; padding: 1px 7px; border-radius: 1px; }
+    .slide-tag.green { background: #388e3c; }
+    .slide-tag.blue { background: #1565c0; }
+    .slide-title { color: #fff; font-size: 19px; font-weight: 700; margin-bottom: 4px; }
+    .slide-desc { color: rgba(255,255,255,.72); font-size: 12px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .slide-meta { display: flex; align-items: center; gap: 10px; margin-top: 6px; font-size: 11px; color: rgba(255,255,255,.5); }
+    .slide-meta .author { color: rgba(255,255,255,.8); }
+    .s-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,.3); border: none; color: #fff; width: 32px; height: 52px; font-size: 18px; cursor: pointer; z-index: 3; transition: background .2s; }
+    .s-btn:hover { background: rgba(240,101,32,.6); }
+    .s-btn.prev { left: 0; }
+    .s-btn.next { right: 0; }
+    .s-dots { position: absolute; bottom: 10px; right: 14px; z-index: 3; display: flex; gap: 4px; }
+    .sdot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.4); cursor: pointer; transition: all .25s; }
+    .sdot.active { background: var(--ac); width: 20px; border-radius: 3px; }
+
+    /* ── HOT LIST ── */
+    .hot-list { flex: 1; background: var(--panel); border: 1px solid var(--border); display: flex; flex-direction: column; }
+    .hot-list-hd { background: var(--panel-hd); padding: 9px 12px; display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+    .hot-list-hd .title { font-size: 14px; font-weight: 700; color: var(--ac); flex: 1; }
+    .hot-list-hd .more { font-size: 12px; color: var(--text-muted); }
+    .hot-list-hd .more:hover { color: var(--ac); }
+    .hl-item { display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-bottom: 1px solid #f5f5f5; cursor: pointer; transition: background .12s; }
+    .hl-item:hover { background: #fafafa; }
+    .hl-item:last-child { border-bottom: none; }
+    .hl-no { width: 20px; text-align: center; font-size: 13px; font-weight: 700; color: var(--text-muted); flex-shrink: 0; }
+    .hl-no.r1 { color: var(--ac); }
+    .hl-no.r2 { color: #e8892a; }
+    .hl-no.r3 { color: #e8b52a; }
+    .hl-cov { width: 34px; height: 51px; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 19px; flex-shrink: 0; }
+    .hl-info { flex: 1; min-width: 0; }
+    .hl-title { font-size: 13px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .hl-meta { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+    .hl-ch { font-size: 11px; color: var(--ac); flex-shrink: 0; }
+
+    /* ── RANKING 3-COL ── */
+    .rank-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 0 14px 12px; gap: 0; }
+    .rank-col { padding-right: 14px; }
+    .rank-col + .rank-col { border-left: 1px solid var(--border); padding-left: 14px; padding-right: 0; }
+    .rank-col + .rank-col + .rank-col { padding-right: 0; }
+    .rcol-hd { display: flex; align-items: center; gap: 6px; padding-bottom: 7px; border-bottom: 1px solid var(--border); margin-bottom: 6px; }
+    .rcol-hd .icon { font-size: 14px; }
+    .rcol-hd .name { font-size: 13px; font-weight: 700; flex: 1; }
+    .rcol-hd .more { font-size: 11px; color: var(--text-muted); }
+    .rcol-hd .more:hover { color: var(--ac); }
+    .ri { display: flex; align-items: center; gap: 7px; padding: 5px 0; border-bottom: 1px solid #f5f5f5; cursor: pointer; }
+    .ri:last-child { border-bottom: none; }
+    .ri:hover .ri-title { color: var(--ac); }
+    .ri-no { width: 18px; height: 18px; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; background: #eee; color: #999; flex-shrink: 0; }
+    .ri-no.n1 { background: var(--ac); color: #fff; }
+    .ri-no.n2 { background: #e8892a; color: #fff; }
+    .ri-no.n3 { background: #e8b52a; color: #fff; }
+    .ri-title { flex: 1; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ri-genre { font-size: 11px; color: var(--text-muted); flex-shrink: 0; white-space: nowrap; }
+
+    /* ── BOOK CARD vertical ── */
+    .bv { cursor: pointer; }
+    .bv:hover .bv-title { color: var(--ac); }
+    .bv-cov { width: 100%; aspect-ratio: 2/3; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 34px; box-shadow: 1px 3px 8px rgba(0,0,0,.18); margin-bottom: 7px; position: relative; overflow: hidden; }
+    .bv-badge { position: absolute; top: 0; left: 0; font-size: 10px; font-weight: 700; padding: 2px 6px; color: #fff; }
+    .bv-badge.hot { background: var(--ac); }
+    .bv-badge.full { background: #388e3c; }
+    .bv-badge.new { background: #1565c0; }
+    .bv-title { font-size: 12px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px; }
+    .bv-meta { font-size: 11px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* ── BOOK CARD horizontal ── */
+    .bh { display: flex; gap: 10px; cursor: pointer; }
+    .bh:hover .bh-title { color: var(--ac); }
+    .bh-cov { width: 64px; height: 96px; border-radius: 3px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 1px 2px 6px rgba(0,0,0,.15); }
+    .bh-body { flex: 1; min-width: 0; }
+    .bh-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .bh-tags { display: flex; gap: 3px; flex-wrap: wrap; margin-bottom: 4px; }
+    .bh-tag { font-size: 11px; color: #888; background: #f2f2f2; padding: 1px 5px; border-radius: 1px; }
+    .bh-tag.g { color: var(--ac); background: var(--ac-lt); }
+    .bh-desc { font-size: 12px; color: var(--text-sub); display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.6; }
+    .bh-foot { display: flex; gap: 6px; margin-top: 4px; font-size: 11px; color: var(--text-muted); }
+    .bh-foot .ch { color: var(--ac); }
+
+    /* ── BOOK GRIDS ── */
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 0 14px 14px; }
+    .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding: 0 14px 14px; }
+    .grid-2h { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 14px 14px; }
+
+    /* ── FREE BANNER ── */
+    .free-banner { background: linear-gradient(100deg, #fff0f0, #ffe0e0); border: 1px solid #ffb3b5; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; gap: 10px; }
+    .fb-left { display: flex; align-items: center; gap: 10px; }
+    .fb-icon { font-size: 30px; flex-shrink: 0; }
+    .fb-text h3 { font-size: 14px; font-weight: 700; color: #b82830; }
+    .fb-text p { font-size: 11px; color: #e5353e; margin-top: 1px; }
+    .fb-btn { background: var(--ac); color: #fff; padding: 9px 22px; font-size: 13px; font-weight: 600; white-space: nowrap; border-radius: 3px; flex-shrink: 0; transition: background .15s; }
+    .fb-btn:hover { background: var(--ac-dk); color: #fff; }
+
+    /* ── UPDATE LIST ── */
+    .upd-list { display: flex; flex-direction: column; padding: 0 14px 10px; }
+    .upd-item { display: flex; align-items: center; gap: 9px; padding: 6px 0; border-bottom: 1px solid #f5f5f5; cursor: pointer; }
+    .upd-item:last-child { border-bottom: none; }
+    .upd-item:hover .upd-title { color: var(--ac); }
+    .upd-cov { width: 36px; height: 54px; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 19px; flex-shrink: 0; box-shadow: 1px 1px 4px rgba(0,0,0,.15); }
+    .upd-body { flex: 1; min-width: 0; }
+    .upd-title { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .upd-ch { font-size: 11px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .upd-ch span { color: var(--ac); }
+    .upd-time { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
+    .new-tag { font-size: 10px; background: var(--ac); color: #fff; padding: 0 4px; margin-left: 3px; border-radius: 1px; }
+    .full-tag { font-size: 10px; background: #388e3c; color: #fff; padding: 0 4px; margin-left: 3px; border-radius: 1px; }
+
+    /* ── CATEGORY GRID ── */
+    .cat-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; padding: 0 14px 14px; }
+    .cat-item { display: flex; flex-direction: column; align-items: center; gap: 4px; border: 1px solid var(--border); background: #fff; padding: 12px 8px; cursor: pointer; transition: all .15s; }
+    .cat-item:hover { border-color: var(--ac); background: var(--ac-lt); box-shadow: 0 2px 6px rgba(240,101,32,.12); }
+    .cat-item:hover .cat-name { color: var(--ac); }
+    .cat-icon { font-size: 22px; }
+    .cat-name { font-size: 12px; font-weight: 600; }
+    .cat-count { font-size: 11px; color: var(--text-muted); }
+
+    /* ── SIDEBAR ── */
+    .sb-panel { background: var(--panel); border: 1px solid var(--border); }
+    .sb-hd { background: var(--panel-hd); padding: 9px 12px; display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+    .sb-hd h3 { font-size: 13px; font-weight: 700; color: var(--ac); flex: 1; }
+    .sb-hd a { font-size: 11px; color: var(--text-muted); }
+    .sb-hd a:hover { color: var(--ac); }
+    .sb-body { padding: 8px 10px; }
+    .sb-item { display: flex; align-items: center; gap: 7px; padding: 6px 0; border-bottom: 1px solid #f5f5f5; cursor: pointer; }
+    .sb-item:last-child { border-bottom: none; }
+    .sb-item:hover .sb-title { color: var(--ac); }
+    .sb-no { width: 17px; text-align: center; font-size: 12px; font-weight: 700; color: var(--text-muted); flex-shrink: 0; }
+    .sb-no.s1 { color: var(--ac); }
+    .sb-no.s2 { color: #e8892a; }
+    .sb-no.s3 { color: #e8b52a; }
+    .sb-cov { width: 28px; height: 38px; border-radius: 1px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+    .sb-title { font-size: 12px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .sb-sub { font-size: 11px; color: var(--text-muted); }
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 5px; padding: 8px 10px; }
+    .tag-cloud a { font-size: 11px; background: #f5f5f5; color: #555; padding: 3px 8px; transition: all .12s; }
+    .tag-cloud a:hover { background: var(--ac-lt); color: var(--ac); }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* ── FOOTER ── */
+    footer { background: #3d3d3d; color: #999; font-size: 12px; margin-top: 14px; }
+    .foot-nav { border-bottom: 1px solid #4a4a4a; }
+    .foot-nav .w { display: flex; flex-wrap: wrap; gap: 0; }
+    .foot-nav a { color: #999; padding: 11px 14px; display: block; transition: all .12s; }
+    .foot-nav a:hover { color: #fff; background: #4a4a4a; }
+    .foot-bottom .w { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; flex-wrap: wrap; gap: 8px; }
+    .foot-logo { font-size: 18px; font-weight: 900; color: #ccc; }
+    .foot-copy { font-size: 11px; color: #777; }
+    .foot-links { display: flex; gap: 12px; }
+    .foot-links a { color: #777; }
+    .foot-links a:hover { color: #ccc; }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="w">
+    <div>
+      <a href="#">Chào mừng bạn đến Cấm Địa!</a>
+      <span class="sep">|</span>
+      <a href="#">Tải App Android</a>
+      <span class="sep">|</span>
+      <a href="#">Tải App iOS</a>
+      <span class="sep">|</span>
+      <a href="#">Trợ giúp</a>
+    </div>
+    <div>
+      <a href="#">Đăng nhập</a>
+      <span class="sep">|</span>
+      <a href="#">Đăng ký</a>
+      <span class="sep">|</span>
+      <a href="#">Tủ sách</a>
+      <span class="sep">|</span>
+      <a href="#">Lịch sử đọc</a>
+      <span class="sep">|</span>
+      <a href="#">Đăng truyện</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="w">
+    <div class="logo">
+      <img src="logo/logo-v1.svg" width="40" height="40" alt="" aria-hidden="true">
+      <span class="logo-txt">Cấm Địa<sub>Vạn thế giới trong một trang sách</sub></span>
+    </div>
+    <div class="search-wrap">
+      <div class="search-bar">
+        <input type="text" placeholder="Nhập tên truyện, tác giả, thể loại..." />
+        <button>🔍 Tìm kiếm</button>
+      </div>
+    </div>
+    <div class="header-actions">
+      <a href="#" class="btn-login">Đăng nhập</a>
+      <a href="#" class="btn-reg">Đăng ký</a>
+      <a href="#" style="font-size:11px">📱 App</a>
+    </div>
+  </div>
+</header>
+
+<!-- GENRE NAV -->
+<nav class="genre-nav">
+  <div class="w">
+    <a href="#" class="active">Trang chủ</a>
+    <a href="#">Tiên Hiệp</a>
+    <a href="#">Kiếm Hiệp</a>
+    <a href="#">Ngôn Tình</a>
+    <a href="#">Đam Mỹ</a>
+    <a href="#">Huyền Huyễn</a>
+    <a href="#">Đô Thị</a>
+    <a href="#">Xuyên Không</a>
+    <a href="#">Trọng Sinh</a>
+    <a href="#">Hệ Thống</a>
+    <a href="#">Lịch Sử</a>
+    <a href="#">Võng Du</a>
+    <a href="#">Truyện Full</a>
+    <a href="#">Truyện Hot</a>
+    <a href="#" class="genre-more">≡ Tất cả thể loại</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="w">
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- SLIDER + HOT -->
+      <div class="top-zone">
+        <div class="slider-wrap">
+          <!-- Slide 1 -->
+          <div class="slide active">
+            <div class="slide-bg-img" style="background:linear-gradient(135deg,#1a1040,#3d1a6b)">⚔️</div>
+            <div class="slide-overlay"></div>
+            <div class="slide-body">
+              <div class="slide-tags">
+                <span class="slide-tag">Tiên Hiệp</span>
+                <span class="slide-tag">Huyền Huyễn</span>
+                <span class="slide-tag green">Đang Ra</span>
+              </div>
+              <div class="slide-title">Lục Địa Kiện Tiên</div>
+              <div class="slide-desc">Tại đại lục phồn hoa, vạn tộc tranh hùng, tiên đạo xưng bá. Một thanh niên bình thường từ Trái Đất xuyên qua, mang theo ký ức vạn năm, bắt đầu cuộc hành trình tu tiên huyền thoại...</div>
+              <div class="slide-meta">
+                <span class="author">Lục Như Hòa Thượng</span>
+                <span>·</span><span>2.554 chương</span>
+                <span>·</span><span>12.8M lượt đọc</span>
+              </div>
+            </div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="slide">
+            <div class="slide-bg-img" style="background:linear-gradient(135deg,#7f0000,#c62828)">🌹</div>
+            <div class="slide-overlay"></div>
+            <div class="slide-body">
+              <div class="slide-tags">
+                <span class="slide-tag">Ngôn Tình</span>
+                <span class="slide-tag">Đô Thị</span>
+                <span class="slide-tag green">Full</span>
+              </div>
+              <div class="slide-title">Người Tình Của Lý Tổng</div>
+              <div class="slide-desc">Cô ấy chỉ là một cô gái bình thường, anh ấy là tổng giám đốc quyền lực nhất thành phố. Một hợp đồng tình yêu vô tình đẩy họ vào nhau, rồi tình yêu thật sự nảy sinh...</div>
+              <div class="slide-meta">
+                <span class="author">Linh Linh</span>
+                <span>·</span><span>395 chương</span>
+                <span>·</span><span>8.2M lượt đọc</span>
+              </div>
+            </div>
+          </div>
+          <!-- Slide 3 -->
+          <div class="slide">
+            <div class="slide-bg-img" style="background:linear-gradient(135deg,#004d1a,#1b5e20)">🏆</div>
+            <div class="slide-overlay"></div>
+            <div class="slide-body">
+              <div class="slide-tags">
+                <span class="slide-tag">Võng Du</span>
+                <span class="slide-tag blue">Đang Ra</span>
+              </div>
+              <div class="slide-title">Toàn Chức Pháp Sư</div>
+              <div class="slide-desc">Thế giới game online nơi phép thuật và chiến đấu là tất cả. Một game thủ thiên tài tái sinh với ký ức của kiếp trước, quyết tâm leo lên đỉnh cao vinh quang...</div>
+              <div class="slide-meta">
+                <span class="author">Loạn</span>
+                <span>·</span><span>3.137 chương</span>
+                <span>·</span><span>15.4M lượt đọc</span>
+              </div>
+            </div>
+          </div>
+          <!-- Slide 4 -->
+          <div class="slide">
+            <div class="slide-bg-img" style="background:linear-gradient(135deg,#0d2b5e,#1565c0)">🕵️</div>
+            <div class="slide-overlay"></div>
+            <div class="slide-body">
+              <div class="slide-tags">
+                <span class="slide-tag">Trọng Sinh</span>
+                <span class="slide-tag">Đô Thị</span>
+                <span class="slide-tag">Hệ Thống</span>
+              </div>
+              <div class="slide-title">Chuyển Sinh Thành Liễu Đột Biến</div>
+              <div class="slide-desc">Sau khi chết trong thế giới tận thế, anh ta tỉnh dậy trong cơ thể một cây liễu đột biến. Với hệ thống vô địch trong tay, anh bắt đầu viết lại lịch sử...</div>
+              <div class="slide-meta">
+                <span class="author">Ẩn danh</span>
+                <span>·</span><span>4.099 chương</span>
+                <span>·</span><span>9.1M lượt đọc</span>
+              </div>
+            </div>
+          </div>
+          <button class="s-btn prev" onclick="changeSlide(-1)">‹</button>
+          <button class="s-btn next" onclick="changeSlide(1)">›</button>
+          <div class="s-dots">
+            <div class="sdot active" onclick="goSlide(0)"></div>
+            <div class="sdot" onclick="goSlide(1)"></div>
+            <div class="sdot" onclick="goSlide(2)"></div>
+            <div class="sdot" onclick="goSlide(3)"></div>
+          </div>
+        </div>
+
+        <!-- Hot List -->
+        <div class="hot-list">
+          <div class="hot-list-hd">
+            <span class="title">🔥 Truyện Đang Hot</span>
+            <a href="#" class="more">Xem BXH đầy đủ →</a>
+          </div>
+          <div class="hl-item" onclick="location.href='story-demo.html'" style="cursor:pointer"><span class="hl-no r1">1</span><div class="hl-cov" style="background:linear-gradient(135deg,#7f0000,#c62828)">🌹</div><div class="hl-info"><div class="hl-title">Chàng Rể Chiến Thần</div><div class="hl-meta">Ngôn Tình · Đô Thị</div></div><span class="hl-ch">4.136 ch.</span></div>
+          <div class="hl-item"><span class="hl-no r2">2</span><div class="hl-cov" style="background:linear-gradient(135deg,#1a3a6b,#1565c0)">⚕️</div><div class="hl-info"><div class="hl-title">Thần Y Trở Lại</div><div class="hl-meta">Ngôn Tình · Đô Thị</div></div><span class="hl-ch">4.690 ch.</span></div>
+          <div class="hl-item"><span class="hl-no r3">3</span><div class="hl-cov" style="background:linear-gradient(135deg,#004d1a,#2e7d32)">🏆</div><div class="hl-info"><div class="hl-title">Toàn Chức Pháp Sư</div><div class="hl-meta">Huyền Huyễn · Dị Giới</div></div><span class="hl-ch">3.137 ch.</span></div>
+          <div class="hl-item"><span class="hl-no">4</span><div class="hl-cov" style="background:linear-gradient(135deg,#4a0072,#7b1fa2)">⚔️</div><div class="hl-info"><div class="hl-title">Lục Địa Kiện Tiên</div><div class="hl-meta">Tiên Hiệp · Sắc</div></div><span class="hl-ch">2.554 ch.</span></div>
+          <div class="hl-item"><span class="hl-no">5</span><div class="hl-cov" style="background:linear-gradient(135deg,#1a0060,#3949ab)">💪</div><div class="hl-info"><div class="hl-title">Chàng Rể Vô Dụng Là Tiên Tôn</div><div class="hl-meta">Trọng Sinh · Đô Thị</div></div><span class="hl-ch">1.704 ch.</span></div>
+          <div class="hl-item"><span class="hl-no">6</span><div class="hl-cov" style="background:linear-gradient(135deg,#3e2600,#f57f17)">👨‍⚕️</div><div class="hl-info"><div class="hl-title">Chàng Rể Bác Sĩ</div><div class="hl-meta">Ngôn Tình · Đô Thị</div></div><span class="hl-ch">2.431 ch.</span></div>
+          <div class="hl-item"><span class="hl-no">7</span><div class="hl-cov" style="background:linear-gradient(135deg,#1b004a,#6a1b9a)">🌟</div><div class="hl-info"><div class="hl-title">Người Chồng Vô Dụng Của Nữ Thần</div><div class="hl-meta">Ngôn Tình · Hiện đại</div></div><span class="hl-ch">5.290 ch.</span></div>
+          <div class="hl-item"><span class="hl-no">8</span><div class="hl-cov" style="background:linear-gradient(135deg,#004030,#00695c)">🎮</div><div class="hl-info"><div class="hl-title">Toàn Chức Cao Thủ: Như Bóng Với Hình</div><div class="hl-meta">Võng Du</div></div><span class="hl-ch">248 ch.</span></div>
+        </div>
+      </div>
+
+      <!-- FREE BANNER -->
+      <div class="free-banner">
+        <div class="fb-left">
+          <div class="fb-icon">📖</div>
+          <div class="fb-text">
+            <h3>Hơn 10.000 truyện miễn phí — Đọc ngay, không cần đăng ký</h3>
+            <p>Cập nhật liên tục · Chương mới mỗi ngày · Đồng bộ đa thiết bị</p>
+          </div>
+        </div>
+        <a href="#" class="fb-btn">Khám phá truyện miễn phí →</a>
+      </div>
+
+      <!-- RANKINGS 3-COL -->
+      <div class="panel">
+        <div class="sec-hd">
+          <h2>Bảng Xếp Hạng</h2>
+          <div class="tabs">
+            <span class="tab active">Tuần này</span>
+            <span class="tab">Tháng này</span>
+            <span class="tab">Toàn thời gian</span>
+          </div>
+          <a href="#" class="more">Xem đầy đủ →</a>
+        </div>
+        <div class="rank-grid">
+          <div class="rank-col">
+            <div class="rcol-hd"><span class="icon">🏆</span><span class="name">Đọc nhiều nhất</span><a href="#" class="more">Thêm →</a></div>
+            <div class="ri"><span class="ri-no n1">1</span><span class="ri-title">Chàng Rể Chiến Thần</span><span class="ri-genre">Ngôn Tình</span></div>
+            <div class="ri"><span class="ri-no n2">2</span><span class="ri-title">Thần Y Trở Lại</span><span class="ri-genre">Đô Thị</span></div>
+            <div class="ri"><span class="ri-no n3">3</span><span class="ri-title">Toàn Chức Pháp Sư</span><span class="ri-genre">Huyền Huyễn</span></div>
+            <div class="ri"><span class="ri-no">4</span><span class="ri-title">Người Chồng Vô Dụng Của Nữ Thần</span><span class="ri-genre">Ngôn Tình</span></div>
+            <div class="ri"><span class="ri-no">5</span><span class="ri-title">Lục Địa Kiện Tiên</span><span class="ri-genre">Tiên Hiệp</span></div>
+            <div class="ri"><span class="ri-no">6</span><span class="ri-title">Chàng Rể Bác Sĩ</span><span class="ri-genre">Đô Thị</span></div>
+            <div class="ri"><span class="ri-no">7</span><span class="ri-title">Tiên Lộ Bình Thường</span><span class="ri-genre">Tiên Hiệp</span></div>
+            <div class="ri"><span class="ri-no">8</span><span class="ri-title">Chàng Rể Vô Dụng Là Tiên Tôn</span><span class="ri-genre">Trọng Sinh</span></div>
+            <div class="ri"><span class="ri-no">9</span><span class="ri-title">Binh Vương Và Bảy Chị Gái Cực Phẩm</span><span class="ri-genre">Đô Thị</span></div>
+            <div class="ri"><span class="ri-no">10</span><span class="ri-title">Người Tình Của Lý Tổng</span><span class="ri-genre">Ngôn Tình</span></div>
+          </div>
+          <div class="rank-col">
+            <div class="rcol-hd"><span class="icon">⭐</span><span class="name">Đánh giá cao nhất</span><a href="#" class="more">Thêm →</a></div>
+            <div class="ri"><span class="ri-no n1">1</span><span class="ri-title">Rể Ngoan Xuống Núi, Tu Thành Chính Quả</span><span class="ri-genre">Kiếm Hiệp</span></div>
+            <div class="ri"><span class="ri-no n2">2</span><span class="ri-title">Toàn Chức Pháp Sư</span><span class="ri-genre">Võng Du</span></div>
+            <div class="ri"><span class="ri-no n3">3</span><span class="ri-title">Tiên Lộ Bình Thường</span><span class="ri-genre">Tiên Hiệp</span></div>
+            <div class="ri"><span class="ri-no">4</span><span class="ri-title">Từ Tam Quốc Bắt Đầu Tu Tiên</span><span class="ri-genre">Lịch Sử</span></div>
+            <div class="ri"><span class="ri-no">5</span><span class="ri-title">Thần Y Trở Lại</span><span class="ri-genre">Đô Thị</span></div>
+            <div class="ri"><span class="ri-no">6</span><span class="ri-title">Chàng Rể Chiến Thần</span><span class="ri-genre">Ngôn Tình</span></div>
+            <div class="ri"><span class="ri-no">7</span><span class="ri-title">Người Tình Của Lý Tổng</span><span class="ri-genre">Ngôn Tình</span></div>
+            <div class="ri"><span class="ri-no">8</span><span class="ri-title">Chuyển Sinh Thành Liễu Đột Biến</span><span class="ri-genre">Hệ Thống</span></div>
+            <div class="ri"><span class="ri-no">9</span><span class="ri-title">Lục Địa Kiện Tiên</span><span class="ri-genre">Tiên Hiệp</span></div>
+            <div class="ri"><span class="ri-no">10</span><span class="ri-title">Binh Vương Và Bảy Chị Gái Cực Phẩm</span><span class="ri-genre">Sắc</span></div>
+          </div>
+          <div class="rank-col">
+            <div class="rcol-hd"><span class="icon">✨</span><span class="name">Mới &amp; Nổi bật</span><a href="#" class="more">Thêm →</a></div>
+            <div class="ri"><span class="ri-no n1">1</span><span class="ri-title">Võng Du Tam Quốc: Thăng Cấp Dòng</span><span class="ri-genre">Võng Du</span></div>
+            <div class="ri"><span class="ri-no n2">2</span><span class="ri-title">Đại Đường, Ta Mới Vừa Xuyên Qua</span><span class="ri-genre">Xuyên Không</span></div>
+            <div class="ri"><span class="ri-no n3">3</span><span class="ri-title">Tây Môn Tiên Tộc</span><span class="ri-genre">Tiên Hiệp</span></div>
+            <div class="ri"><span class="ri-no">4</span><span class="ri-title">Mỗi Ngày Tình Báo: Từ Rắn Nước</span><span class="ri-genre">Dị Năng</span></div>
+            <div class="ri"><span class="ri-no">5</span><span class="ri-title">Toàn Dân Hải Đảo Cầu Sinh</span><span class="ri-genre">Mạt Thế</span></div>
+            <div class="ri"><span class="ri-no">6</span><span class="ri-title">Tinh Tế Rách Nát Nữ Vương</span><span class="ri-genre">Nữ Cường</span></div>
+            <div class="ri"><span class="ri-no">7</span><span class="ri-title">Chia Tay Sau Ta Dựa Cá Mặn Bạo Hồng</span><span class="ri-genre">Đam Mỹ</span></div>
+            <div class="ri"><span class="ri-no">8</span><span class="ri-title">Bắt Đầu Triệu Hoán Lý Tầm Hoan</span><span class="ri-genre">Hệ Thống</span></div>
+            <div class="ri"><span class="ri-no">9</span><span class="ri-title">Đại Hạ Thánh Đình</span><span class="ri-genre">Lịch Sử</span></div>
+            <div class="ri"><span class="ri-no">10</span><span class="ri-title">Chuyển Sinh Thành Liễu Đột Biến</span><span class="ri-genre">Trọng Sinh</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EDITOR'S PICKS -->
+      <div class="panel">
+        <div class="sec-hd">
+          <h2>Biên Tập Chọn Lọc</h2>
+          <div class="tabs">
+            <span class="tab active">Tất cả</span>
+            <span class="tab">Tiên Hiệp</span>
+            <span class="tab">Ngôn Tình</span>
+            <span class="tab">Đô Thị</span>
+            <span class="tab">Huyền Huyễn</span>
+          </div>
+          <a href="#" class="more">Xem thêm →</a>
+        </div>
+        <div class="grid-5">
+          <div class="bv"><div class="bv-cov" style="background:linear-gradient(135deg,#7f0000,#c62828)">🌹<span class="bv-badge hot">HOT</span></div><div class="bv-title">Người Tình Của Lý Tổng</div><div class="bv-meta">Linh Linh · Ngôn Tình · 395ch</div></div>
+          <div class="bv"><div class="bv-cov" style="background:linear-gradient(135deg,#4a0072,#7b1fa2)">⚔️<span class="bv-badge hot">HOT</span></div><div class="bv-title">Lục Địa Kiện Tiên</div><div class="bv-meta">Lục Như Hòa Thượng · Tiên Hiệp</div></div>
+          <div class="bv"><div class="bv-cov" style="background:linear-gradient(135deg,#004d1a,#2e7d32)">🏆<span class="bv-badge hot">HOT</span></div><div class="bv-title">Toàn Chức Pháp Sư</div><div class="bv-meta">Loạn · Huyền Huyễn · 3.137ch</div></div>
+          <div class="bv"><div class="bv-cov" style="background:linear-gradient(135deg,#1a0d40,#3949ab)">💪<span class="bv-badge full">FULL</span></div><div class="bv-title">Rể Ngoan Xuống Núi</div><div class="bv-meta">Ss Tần · Kiếm Hiệp · 1.477ch</div></div>
+          <div class="bv"><div class="bv-cov" style="background:linear-gradient(135deg,#002a3a,#00838f)">🕵️<span class="bv-badge new">MỚI</span></div><div class="bv-title">Toàn Dân Hải Đảo Cầu Sinh</div><div class="bv-meta">Ẩn danh · Mạt Thế · 198ch</div></div>
+        </div>
+      </div>
+
+      <!-- NEWLY UPDATED + COMPLETE (2-col) -->
+      <div class="two-col">
+        <!-- Mới cập nhật -->
+        <div class="panel">
+          <div class="sec-hd"><h2>Mới Cập Nhật</h2><a href="#" class="more">Xem tất cả →</a></div>
+          <div class="upd-list">
+            <div class="upd-item">
+              <div class="upd-cov" style="background:linear-gradient(135deg,#1a0060,#3949ab)">💪</div>
+              <div class="upd-body"><div class="upd-title">Chàng Rể Vô Dụng Là Tiên Tôn<span class="new-tag">MỚI</span></div><div class="upd-ch"><span>Ch.1.704</span> – Tiên tôn tái xuất thế gian...</div></div>
+              <span class="upd-time">15 phút</span>
+            </div>
+            <div class="upd-item">
+              <div class="upd-cov" style="background:linear-gradient(135deg,#7f0000,#c62828)">🌹</div>
+              <div class="upd-body"><div class="upd-title">Chàng Rể Chiến Thần<span class="new-tag">MỚI</span></div><div class="upd-ch"><span>Ch.4.136</span> – Chiến thần hiển uy danh...</div></div>
+              <span class="upd-time">42 phút</span>
+            </div>
+            <div class="upd-item">
+              <div class="upd-cov" style="background:linear-gradient(135deg,#1a3a6b,#1565c0)">⚕️</div>
+              <div class="upd-body"><div class="upd-title">Thần Y Trở Lại<span class="new-tag">MỚI</span></div><div class="upd-ch"><span>Ch.4.690</span> – Bí ẩn về huyết mạch...</div></div>
+              <span class="upd-time">1 giờ</span>
+            </div>
+            <div class="upd-item">
+              <div class="upd-cov" style="background:linear-gradient(135deg,#004030,#00695c)">🎮</div>
+              <div class="upd-body"><div class="upd-title">Võng Du Tam Quốc: Thăng Cấp Dòng</div><div class="upd-ch"><span>Ch.381</span> – Đại chiến quyết định...</div></div>
+              <span class="upd-time">2 giờ</span>
+            </div>
+            <div class="upd-item">
+              <div class="upd-cov" style="background:linear-gradient(135deg,#3e1200,#bf360c)">🔮</div>
+              <div class="upd-body"><div class="upd-title">Từ Tam Quốc Bắt Đầu Tu Tiên</div><div class="upd-ch"><span>Ch.479</span> – Bí kíp cổ đại hiển thế...</div></div>
+              <span class="upd-time">3 giờ</span>
+            </div>
+            <div class="upd-item">
+              <div class="upd-cov" style="background:linear-gradient(135deg,#1b004a,#6a1b9a)">🌟</div>
+              <div class="upd-body"><div class="upd-title">Tinh Tế Rách Nát Nữ Vương</div><div class="upd-ch"><span>Ch.2.925</span> – Nữ vương phản công...</div></div>
+              <span class="upd-time">5 giờ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Truyện Full -->
+        <div class="panel">
+          <div class="sec-hd"><h2>Truyện Đã Hoàn Thành</h2><a href="#" class="more">Xem tất cả →</a></div>
+          <div class="upd-list">
+            <div class="upd-item">
+              <div class="upd-cov" style="background:linear-gradient(135deg,#1a0d40,#3949ab)">🧙</div>
+              <div class="upd-body"><div class="upd-title">Rể Ngoan Xuống Núi, Tu Thành Chính Quả<span class="full-tag">FULL</span></div><div class="upd-ch">Kiếm Hiệp · 1.477 chương</div></div>
+              <span class="upd-time" style="color:#388e3c;font-weight:700">Hoàn</span>
+            </div>
+            <div class="upd-item">
+              <div class="upd-cov" style="background:linear-gradient(135deg,#7f0000,#c62828)">🌹</div>
+              <div class="upd-body"><div class="upd-title">Người Tình Của Lý Tổng<span class="full-tag">FULL</span></div><div class="upd-ch">Ngôn Tình · 395 chương</div></div>
+              <span class="upd-time" style="color:#388e3c;font-weight:700">Hoàn</span>
+            </div>
+            <div class="upd-item">
+              <div class="upd-cov" style="background:linear-gradient(135deg,#1b004a,#6a1b9a)">🌸</div>
+              <div class="upd-body"><div class="upd-title">Người Chồng Vô Dụng Của Nữ Thần<span class="full-tag">FULL</span></div><div class="upd-ch">Ngôn Tình · 5.290 chương</div></div>
+              <span class="upd-time" style="color:#388e3c;font-weight:700">Hoàn</span>
+            </div>
+            <div class="upd-item">
+              <div class="upd-cov" style="background:linear-gradient(135deg,#3e1200,#bf360c)">🌺</div>
+              <div class="upd-body"><div class="upd-title">Ngôn Tình Tổng Giám Đốc: Yêu Em Từ Khi Nào<span class="full-tag">FULL</span></div><div class="upd-ch">Ngôn Tình · 280 chương</div></div>
+              <span class="upd-time" style="color:#388e3c;font-weight:700">Hoàn</span>
+            </div>
+            <div class="upd-item">
+              <div class="upd-cov" style="background:linear-gradient(135deg,#004030,#00695c)">📜</div>
+              <div class="upd-body"><div class="upd-title">Xuyên Thành Tiểu Thư Phản Diện<span class="full-tag">FULL</span></div><div class="upd-ch">Xuyên Không · 422 chương</div></div>
+              <span class="upd-time" style="color:#388e3c;font-weight:700">Hoàn</span>
+            </div>
+            <div class="upd-item">
+              <div class="upd-cov" style="background:linear-gradient(135deg,#002a3a,#01579b)">🌊</div>
+              <div class="upd-body"><div class="upd-title">Trọng Sinh Thành Đại Tiểu Thư Nhà Giàu<span class="full-tag">FULL</span></div><div class="upd-ch">Trọng Sinh · 318 chương</div></div>
+              <span class="upd-time" style="color:#388e3c;font-weight:700">Hoàn</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GỢI Ý CHO BẠN -->
+      <div class="panel">
+        <div class="sec-hd">
+          <h2>Gợi Ý Cho Bạn</h2>
+          <div class="tabs">
+            <span class="tab active">Tất cả</span>
+            <span class="tab">Miễn phí</span>
+            <span class="tab">Đang ra</span>
+            <span class="tab">Hoàn thành</span>
+          </div>
+          <a href="#" class="more">Xem thêm →</a>
+        </div>
+        <div class="grid-2h">
+          <div class="bh"><div class="bh-cov" style="background:linear-gradient(135deg,#7f0000,#c62828)">🌹</div><div class="bh-body"><div class="bh-title">Chàng Rể Chiến Thần</div><div class="bh-tags"><span class="bh-tag g">Ngôn Tình</span><span class="bh-tag g">Đô Thị</span><span class="bh-tag">Sủng</span><span class="bh-tag">Đang Ra</span></div><div class="bh-desc">Bị gia đình vợ coi thường, nhưng anh chính là chiến thần huyền thoại đã ẩn danh suốt nhiều năm qua. Khi thân phận được hé lộ, cả thành phố rung chuyển...</div><div class="bh-foot"><span>Tiếu Ngạo Dư Sinh</span><span>·</span><span class="ch">4.136 ch.</span><span>·</span><span>18.3M đọc</span></div></div></div>
+          <div class="bh"><div class="bh-cov" style="background:linear-gradient(135deg,#4a0072,#7b1fa2)">⚔️</div><div class="bh-body"><div class="bh-title">Lục Địa Kiện Tiên</div><div class="bh-tags"><span class="bh-tag g">Tiên Hiệp</span><span class="bh-tag">Sắc</span><span class="bh-tag">Đang Ra</span></div><div class="bh-desc">Vạn tộc tranh hùng tại đại lục Thần Châu, tiên đạo xưng bá. Một thanh niên bình thường với ký ức ngàn năm bắt đầu hành trình chinh phục tiên giới...</div><div class="bh-foot"><span>Lục Như Hòa Thượng</span><span>·</span><span class="ch">2.554 ch.</span><span>·</span><span>12.8M đọc</span></div></div></div>
+          <div class="bh"><div class="bh-cov" style="background:linear-gradient(135deg,#1a3a6b,#1565c0)">⚕️</div><div class="bh-body"><div class="bh-title">Thần Y Trở Lại</div><div class="bh-tags"><span class="bh-tag g">Ngôn Tình</span><span class="bh-tag g">Đô Thị</span><span class="bh-tag">Đang Ra</span></div><div class="bh-desc">Thần y huyền thoại trở về sau nhiều năm ẩn tích. Vừa xuất hiện đã lập tức chấn động y giới, kẻ thù cũ, tình cũ đều lần lượt tìm đến...</div><div class="bh-foot"><span>Tiểu Tịnh</span><span>·</span><span class="ch">4.690 ch.</span><span>·</span><span>21.6M đọc</span></div></div></div>
+          <div class="bh"><div class="bh-cov" style="background:linear-gradient(135deg,#0d2b5e,#1565c0)">🕵️</div><div class="bh-body"><div class="bh-title">Chuyển Sinh Thành Liễu Đột Biến</div><div class="bh-tags"><span class="bh-tag g">Trọng Sinh</span><span class="bh-tag g">Hệ Thống</span><span class="bh-tag">Đô Thị</span></div><div class="bh-desc">Sau khi chết trong tận thế, tái sinh thành cây liễu đột biến. Với hệ thống vạn năng, dần dần tiến hóa, thống trị thế giới hoang tàn...</div><div class="bh-foot"><span>Ẩn danh</span><span>·</span><span class="ch">4.099 ch.</span><span>·</span><span>9.1M đọc</span></div></div></div>
+          <div class="bh"><div class="bh-cov" style="background:linear-gradient(135deg,#3e1200,#e64a19)">🔮</div><div class="bh-body"><div class="bh-title">Từ Tam Quốc Bắt Đầu Tu Tiên</div><div class="bh-tags"><span class="bh-tag g">Tiên Hiệp</span><span class="bh-tag g">Lịch Sử</span><span class="bh-tag">Đang Ra</span></div><div class="bh-desc">Xuyên đến thời Tam Quốc loạn lạc, bỗng nhiên phát hiện thiên địa có linh khí, tu tiên có thể thành tiên. Trong thời đại anh hùng, ta chọn con đường bất tử...</div><div class="bh-foot"><span>Phàm Nhân Nhậm</span><span>·</span><span class="ch">479 ch.</span><span>·</span><span>3.2M đọc</span></div></div></div>
+          <div class="bh"><div class="bh-cov" style="background:linear-gradient(135deg,#1b004a,#6a1b9a)">🌸</div><div class="bh-body"><div class="bh-title">Tinh Tế Rách Nát Nữ Vương</div><div class="bh-tags"><span class="bh-tag g">Nữ Cường</span><span class="bh-tag g">Ngôn Tình</span><span class="bh-tag">Đô Thị</span></div><div class="bh-desc">Cô bị phản bội, bị cướp đoạt tất cả. Khi tái sinh, cô không còn là cô gái ngây thơ ngày xưa. Nữ vương trở về, thời đại thay đổi...</div><div class="bh-foot"><span>Liễu Thăng Thăng</span><span>·</span><span class="ch">2.925 ch.</span><span>·</span><span>7.4M đọc</span></div></div></div>
+        </div>
+      </div>
+
+      <!-- CATEGORIES -->
+      <div class="panel">
+        <div class="sec-hd"><h2>Khám Phá Theo Thể Loại</h2><a href="#" class="more">Tất cả thể loại →</a></div>
+        <div class="cat-grid">
+          <div class="cat-item"><span class="cat-icon">⚔️</span><span class="cat-name">Tiên Hiệp</span><span class="cat-count">8.241 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🗡️</span><span class="cat-name">Kiếm Hiệp</span><span class="cat-count">4.132 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🌹</span><span class="cat-name">Ngôn Tình</span><span class="cat-count">12.544 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">💙</span><span class="cat-name">Đam Mỹ</span><span class="cat-count">6.318 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🌸</span><span class="cat-name">Bách Hợp</span><span class="cat-count">2.104 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🏛️</span><span class="cat-name">Quan Trường</span><span class="cat-count">1.876 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🎮</span><span class="cat-name">Võng Du</span><span class="cat-count">3.210 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🚀</span><span class="cat-name">Khoa Huyễn</span><span class="cat-count">2.890 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">⚙️</span><span class="cat-name">Hệ Thống</span><span class="cat-count">5.442 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🔮</span><span class="cat-name">Huyền Huyễn</span><span class="cat-count">9.103 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🌍</span><span class="cat-name">Dị Giới</span><span class="cat-count">4.567 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">⚡</span><span class="cat-name">Dị Năng</span><span class="cat-count">3.012 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🪖</span><span class="cat-name">Quân Sự</span><span class="cat-count">1.234 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">📜</span><span class="cat-name">Lịch Sử</span><span class="cat-count">2.788 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">⏳</span><span class="cat-name">Xuyên Không</span><span class="cat-count">7.891 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">⚡</span><span class="cat-name">Xuyên Nhanh</span><span class="cat-count">4.320 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🔄</span><span class="cat-name">Trọng Sinh</span><span class="cat-count">6.543 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🔍</span><span class="cat-name">Trinh Thám</span><span class="cat-count">1.890 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">👻</span><span class="cat-name">Linh Dị</span><span class="cat-count">2.345 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">😭</span><span class="cat-name">Ngược</span><span class="cat-count">3.102 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">💋</span><span class="cat-name">Sắc</span><span class="cat-count">8.920 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">💕</span><span class="cat-name">Sủng</span><span class="cat-count">7.654 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">👑</span><span class="cat-name">Cung Đấu</span><span class="cat-count">2.210 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">💪</span><span class="cat-name">Nữ Cường</span><span class="cat-count">4.432 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🏠</span><span class="cat-name">Gia Đấu</span><span class="cat-count">1.987 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🏯</span><span class="cat-name">Đông Phương</span><span class="cat-count">3.321 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🏙️</span><span class="cat-name">Đô Thị</span><span class="cat-count">11.234 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">🌾</span><span class="cat-name">Điền Văn</span><span class="cat-count">2.109 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">☣️</span><span class="cat-name">Mạt Thế</span><span class="cat-count">3.456 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">📚</span><span class="cat-name">Light Novel</span><span class="cat-count">1.543 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">✍️</span><span class="cat-name">Đoản Văn</span><span class="cat-count">5.678 bộ</span></div>
+          <div class="cat-item"><span class="cat-icon">💼</span><span class="cat-name">Hiện Đại</span><span class="cat-count">9.876 bộ</span></div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- Login prompt -->
+      <div class="sb-panel" style="padding:14px;text-align:center;background:#fff5f5;border-color:#ffb3b5">
+        <div style="font-size:34px;margin-bottom:6px">📚</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;color:#e5353e">Tủ Sách Của Tôi</div>
+        <div style="font-size:11px;color:#888;margin-bottom:10px;line-height:1.5">Đăng nhập để lưu truyện và đồng bộ tiến trình đọc đa thiết bị</div>
+        <a href="#" style="display:block;background:#e5353e;color:#fff;padding:7px;font-size:12px;font-weight:600;margin-bottom:7px;border-radius:2px">Đăng nhập</a>
+        <a href="#" style="display:block;border:1px solid #e5353e;color:#e5353e;padding:7px;font-size:12px;border-radius:2px">Đăng ký miễn phí</a>
+      </div>
+
+      <!-- Top tháng -->
+      <div class="sb-panel">
+        <div class="sb-hd"><h3>🏆 Top Tháng</h3><a href="#">Thêm →</a></div>
+        <div class="sb-body">
+          <div class="sb-item"><span class="sb-no s1">1</span><div class="sb-cov" style="background:linear-gradient(135deg,#7f0000,#c62828)">🌹</div><div><div class="sb-title">Chàng Rể Chiến Thần</div><div class="sb-sub">Ngôn Tình · 18.3M đọc</div></div></div>
+          <div class="sb-item"><span class="sb-no s2">2</span><div class="sb-cov" style="background:linear-gradient(135deg,#1a3a6b,#1565c0)">⚕️</div><div><div class="sb-title">Thần Y Trở Lại</div><div class="sb-sub">Đô Thị · 21.6M đọc</div></div></div>
+          <div class="sb-item"><span class="sb-no s3">3</span><div class="sb-cov" style="background:linear-gradient(135deg,#004d1a,#2e7d32)">🏆</div><div><div class="sb-title">Toàn Chức Pháp Sư</div><div class="sb-sub">Huyền Huyễn · 15.4M đọc</div></div></div>
+          <div class="sb-item"><span class="sb-no">4</span><div class="sb-cov" style="background:linear-gradient(135deg,#4a0072,#7b1fa2)">⚔️</div><div><div class="sb-title">Lục Địa Kiện Tiên</div><div class="sb-sub">Tiên Hiệp · 12.8M đọc</div></div></div>
+          <div class="sb-item"><span class="sb-no">5</span><div class="sb-cov" style="background:linear-gradient(135deg,#1b004a,#6a1b9a)">🌸</div><div><div class="sb-title">Người Chồng Vô Dụng Của Nữ Thần</div><div class="sb-sub">Ngôn Tình · 11.2M đọc</div></div></div>
+          <div class="sb-item"><span class="sb-no">6</span><div class="sb-cov" style="background:linear-gradient(135deg,#3e2600,#f57f17)">👨‍⚕️</div><div><div class="sb-title">Chàng Rể Bác Sĩ</div><div class="sb-sub">Đô Thị · 9.8M đọc</div></div></div>
+          <div class="sb-item"><span class="sb-no">7</span><div class="sb-cov" style="background:linear-gradient(135deg,#1a0060,#3949ab)">💪</div><div><div class="sb-title">Chàng Rể Vô Dụng Là Tiên Tôn</div><div class="sb-sub">Trọng Sinh · 8.5M đọc</div></div></div>
+        </div>
+      </div>
+
+      <!-- Tác giả nổi bật -->
+      <div class="sb-panel">
+        <div class="sb-hd"><h3>✍️ Tác Giả Nổi Bật</h3><a href="#">Thêm →</a></div>
+        <div class="sb-body">
+          <div class="sb-item"><span class="sb-no s1">1</span><div class="sb-cov" style="background:linear-gradient(135deg,#7f0000,#c62828);border-radius:50%">✍️</div><div><div class="sb-title">Tiếu Ngạo Dư Sinh</div><div class="sb-sub">12 bộ · 48.2M đọc</div></div></div>
+          <div class="sb-item"><span class="sb-no s2">2</span><div class="sb-cov" style="background:linear-gradient(135deg,#1a3a6b,#1565c0);border-radius:50%">✍️</div><div><div class="sb-title">Tiểu Tịnh</div><div class="sb-sub">8 bộ · 31.5M đọc</div></div></div>
+          <div class="sb-item"><span class="sb-no s3">3</span><div class="sb-cov" style="background:linear-gradient(135deg,#004d1a,#2e7d32);border-radius:50%">✍️</div><div><div class="sb-title">Lục Như Hòa Thượng</div><div class="sb-sub">5 bộ · 18.9M đọc</div></div></div>
+          <div class="sb-item"><span class="sb-no">4</span><div class="sb-cov" style="background:linear-gradient(135deg,#4a0072,#7b1fa2);border-radius:50%">✍️</div><div><div class="sb-title">Linh Linh</div><div class="sb-sub">15 bộ · 14.2M đọc</div></div></div>
+          <div class="sb-item"><span class="sb-no">5</span><div class="sb-cov" style="background:linear-gradient(135deg,#3e1200,#bf360c);border-radius:50%">✍️</div><div><div class="sb-title">Phàm Nhân Nhậm</div><div class="sb-sub">7 bộ · 10.1M đọc</div></div></div>
+        </div>
+      </div>
+
+      <!-- Tags phổ biến -->
+      <div class="sb-panel">
+        <div class="sb-hd"><h3>🏷️ Tags Phổ Biến</h3></div>
+        <div class="tag-cloud">
+          <a href="#">Full</a><a href="#">Sủng</a><a href="#">HE</a><a href="#">BE</a>
+          <a href="#">18+</a><a href="#">Ngôn Tình Ngắn</a><a href="#">Nữ Cường</a>
+          <a href="#">Xuyên Không Cổ Đại</a><a href="#">Hài Hước</a><a href="#">Ngược Tâm</a>
+          <a href="#">Xuyên Nhanh</a><a href="#">Phản Diện</a><a href="#">Cung Đấu</a>
+          <a href="#">Thù Thành Ái</a><a href="#">Trọng Sinh Báo Thù</a><a href="#">HĐN</a>
+        </div>
+      </div>
+
+      <!-- Ngôn Tình chuyên mục -->
+      <div class="sb-panel">
+        <div class="sb-hd"><h3>🌹 Ngôn Tình</h3></div>
+        <div class="tag-cloud">
+          <a href="#">Ngôn Tình Full</a><a href="#">Ngôn Tình Hot</a>
+          <a href="#">Ngôn Tình Ngắn</a><a href="#">Ngôn Tình 18+</a>
+          <a href="#">Ngôn Tình Hài</a><a href="#">Ngôn Tình Hoàn</a>
+          <a href="#">Sủng Văn</a><a href="#">Ngược Văn</a>
+        </div>
+      </div>
+
+      <!-- App download -->
+      <div class="sb-panel" style="background:#fff5f5;border:1px solid #ffb3b5;padding:14px;text-align:center">
+        <div style="font-size:26px;margin-bottom:5px">📱</div>
+        <div style="font-size:12px;font-weight:700;color:#e5353e;margin-bottom:3px;letter-spacing:1px">Tải App Cấm Địa</div>
+        <div style="font-size:10px;color:#888;margin-bottom:10px;line-height:1.5">Đọc offline · Chế độ tối · Đồng bộ đa thiết bị</div>
+        <div style="display:flex;gap:6px;justify-content:center">
+          <a href="#" style="background:#e5353e;color:#fff;padding:5px 12px;font-size:11px;font-weight:600;border-radius:2px">Android</a>
+          <a href="#" style="background:#fff;color:#e5353e;padding:5px 12px;font-size:11px;font-weight:600;border-radius:2px;border:1px solid #e5353e">iOS</a>
+        </div>
+      </div>
+
+    </div><!-- /sidebar -->
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-nav">
+    <div class="w">
+      <a href="#">Trang chủ</a>
+      <a href="#">Đọc truyện</a>
+      <a href="#">Bảng xếp hạng</a>
+      <a href="#">Truyện Full</a>
+      <a href="#">Truyện Hot</a>
+      <a href="#">Mới nhất</a>
+      <a href="#">Ngôn Tình</a>
+      <a href="#">Tiên Hiệp</a>
+      <a href="#">Huyền Huyễn</a>
+      <a href="#">Xuyên Không</a>
+      <a href="#">Đăng truyện</a>
+      <a href="#">Trợ giúp</a>
+      <a href="#">Giới thiệu</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div class="w">
+      <div class="foot-logo">Cấm Địa</div>
+      <div class="foot-copy">© 2026 Cấm Địa – Vạn thế giới trong một trang sách. Bảo lưu mọi quyền.</div>
+      <div class="foot-links">
+        <a href="#">Chính sách bảo mật</a>
+        <a href="#">Điều khoản</a>
+        <a href="#">Liên hệ</a>
+        <a href="#">DMCA</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  let idx = 0;
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.sdot');
+  function goSlide(n) {
+    slides[idx].classList.remove('active'); dots[idx].classList.remove('active');
+    idx = (n + slides.length) % slides.length;
+    slides[idx].classList.add('active'); dots[idx].classList.add('active');
+  }
+  function changeSlide(d) { goSlide(idx + d); }
+  setInterval(() => changeSlide(1), 4500);
+
+  document.querySelectorAll('.tabs').forEach(tabs => {
+    tabs.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      });
+    });
+  });
+</script>
+</body>
+</html>

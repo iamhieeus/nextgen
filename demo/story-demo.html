@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chàng Rể Chiến Thần – Cấm Địa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ac:        #e5353e;
+      --ac-dk:     #b82830;
+      --ac-lt:     #fff0f0;
+      --bg:        #f4f4f4;
+      --panel:     #ffffff;
+      --panel-hd:  #fff5f5;
+      --border:    #e5e5e5;
+      --text:      #333333;
+      --text-sub:  #666666;
+      --text-muted:#999999;
+      --nav:       #3d3d3d;
+      --w:         1200px;
+    }
+    body { font-family: 'Be Vietnam Pro', "Segoe UI", Arial, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: var(--ac); }
+    .w { width: var(--w); margin: 0 auto; }
+
+    /* ── TOP BAR ── */
+    .top-bar { background: #2a2a2a; color: #999; font-size: 12px; height: 30px; display: flex; align-items: center; }
+    .top-bar .w { display: flex; justify-content: space-between; align-items: center; }
+    .top-bar a { color: #999; }
+    .top-bar a:hover { color: #fff; }
+    .top-bar .sep { color: #555; margin: 0 5px; }
+
+    /* ── HEADER ── */
+    header { background: #fff; border-bottom: 2px solid var(--ac); height: 64px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+    header .w { display: flex; align-items: center; gap: 20px; height: 100%; }
+    .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .logo-txt { font-size: 23px; font-weight: 900; color: var(--ac); letter-spacing: -.5px; line-height: 1.15; }
+    .logo-txt sub { font-size: 10px; font-weight: 400; color: #aaa; display: block; margin-top: 2px; letter-spacing: .3px; font-style: normal; }
+    .search-bar { display: flex; border: 2px solid var(--ac); overflow: hidden; border-radius: 3px; height: 40px; flex: 1; max-width: 500px; }
+    .search-bar input { flex: 1; border: none; outline: none; padding: 0 14px; font-size: 14px; background: #fff; color: #333; }
+    .search-bar input::placeholder { color: #bbb; }
+    .search-bar button { background: var(--ac); color: #fff; border: none; padding: 0 22px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; transition: background .15s; }
+    .search-bar button:hover { background: var(--ac-dk); }
+    .header-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; flex-shrink: 0; }
+    .btn-login { font-size: 13px; color: var(--text-sub); border: 1px solid #ddd; padding: 8px 18px; border-radius: 3px; }
+    .btn-login:hover { color: var(--ac); }
+    .btn-reg { background: var(--ac); color: #fff !important; font-size: 13px; padding: 8px 18px; border-radius: 3px; font-weight: 600; }
+    .btn-reg:hover { background: var(--ac-dk) !important; }
+
+    /* ── GENRE NAV ── */
+    .genre-nav { background: var(--nav); position: sticky; top: 0; z-index: 100; }
+    .genre-nav .w { display: flex; align-items: center; overflow: hidden; }
+    .genre-nav a { color: rgba(255,255,255,.8); font-size: 13px; padding: 0 13px; height: 38px; display: flex; align-items: center; white-space: nowrap; border-right: 1px solid rgba(255,255,255,.08); transition: all .15s; }
+    .genre-nav a:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .genre-nav a.active { background: var(--ac); color: #fff; font-weight: 600; }
+    .genre-nav .genre-more { margin-left: auto; border-left: 1px solid rgba(255,255,255,.12); border-right: none; background: rgba(229,53,62,.25); color: #ffaaaa; }
+    .genre-nav .genre-more:hover { background: var(--ac); color: #fff; }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb { background: #fff; border-bottom: 1px solid var(--border); }
+    .breadcrumb .w { display: flex; align-items: center; gap: 6px; padding: 9px 0; font-size: 12px; color: var(--text-muted); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--ac); }
+    .breadcrumb .sep { color: #ccc; }
+    .breadcrumb .cur { color: var(--text); font-weight: 500; }
+
+    /* ── LAYOUT ── */
+    .main { padding: 14px 0 32px; }
+    .main .w { display: flex; gap: 14px; align-items: flex-start; }
+    .content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+    .sidebar { width: 252px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
+    .panel { background: var(--panel); border: 1px solid var(--border); }
+
+    /* ── BOOK HEADER ── */
+    .book-hd { display: flex; gap: 24px; padding: 24px; }
+    .cover-wrap { flex-shrink: 0; position: relative; }
+    .cover { width: 180px; height: 240px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 72px; box-shadow: 2px 4px 16px rgba(0,0,0,.22); overflow: hidden; background: linear-gradient(135deg,#7f0000,#c62828); }
+    .cover-status { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,.55); color: #fff; font-size: 11px; font-weight: 600; text-align: center; padding: 4px 0; letter-spacing: .5px; }
+    .book-info { flex: 1; min-width: 0; }
+    .book-title { font-size: 24px; font-weight: 800; line-height: 1.25; margin-bottom: 8px; color: #222; }
+    .book-meta-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+    .author-link { font-size: 14px; color: var(--ac); font-weight: 600; }
+    .author-link:hover { color: var(--ac-dk); }
+    .genre-badge { font-size: 12px; background: var(--ac-lt); color: var(--ac); border: 1px solid #ffc5c7; padding: 2px 10px; border-radius: 2px; font-weight: 500; }
+    .status-on { font-size: 12px; background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; padding: 2px 10px; border-radius: 2px; font-weight: 600; }
+    .status-full { font-size: 12px; background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; padding: 2px 10px; border-radius: 2px; font-weight: 600; }
+    .rating-row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+    .stars { color: #f59e0b; font-size: 15px; letter-spacing: 1px; }
+    .rating-val { font-size: 20px; font-weight: 800; color: #f59e0b; }
+    .rating-count { font-size: 12px; color: var(--text-muted); }
+    .stats-row { display: flex; gap: 24px; margin-bottom: 16px; padding: 12px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stat { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .stat-val { font-size: 16px; font-weight: 700; color: #222; }
+    .stat-label { font-size: 11px; color: var(--text-muted); }
+    .synopsis-wrap { margin-bottom: 16px; }
+    .synopsis-wrap p { font-size: 13px; color: var(--text-sub); line-height: 1.7; }
+    .synopsis-toggle { font-size: 12px; color: var(--ac); cursor: pointer; margin-top: 5px; display: inline-block; }
+    .synopsis-toggle:hover { color: var(--ac-dk); }
+    .tags-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+    .tag { font-size: 12px; background: #f5f5f5; color: #555; padding: 3px 10px; border-radius: 2px; border: 1px solid #e8e8e8; }
+    .tag:hover { border-color: var(--ac); color: var(--ac); }
+    .action-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .btn-read { background: var(--ac); color: #fff; font-size: 15px; font-weight: 700; padding: 11px 32px; border-radius: 3px; border: none; cursor: pointer; transition: background .15s; display: inline-block; }
+    .btn-read:hover { background: var(--ac-dk); color: #fff; }
+    .btn-outline { font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 3px; border: 1px solid var(--border); color: var(--text); background: #fff; cursor: pointer; transition: all .15s; display: inline-block; }
+    .btn-outline:hover { border-color: var(--ac); color: var(--ac); }
+    .btn-bookmark { font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 3px; border: 1px solid var(--ac); color: var(--ac); background: var(--ac-lt); cursor: pointer; transition: all .15s; display: inline-block; }
+    .btn-bookmark:hover { background: var(--ac); color: #fff; }
+
+    /* ── TAB BAR ── */
+    .tab-bar { display: flex; border-bottom: 2px solid var(--border); padding: 0 20px; background: #fff; }
+    .tab-item { font-size: 14px; font-weight: 600; padding: 13px 20px; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all .15s; white-space: nowrap; }
+    .tab-item:hover { color: var(--text); }
+    .tab-item.active { color: var(--ac); border-bottom-color: var(--ac); }
+
+    /* ── CHAPTER LIST ── */
+    .ch-panel { padding: 16px 20px 20px; }
+    .ch-controls { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .ch-total { font-size: 13px; color: var(--text-muted); }
+    .ch-total strong { color: var(--text); }
+    .ch-sort { display: flex; gap: 2px; }
+    .ch-sort-btn { font-size: 12px; padding: 4px 12px; border: 1px solid var(--border); background: #fff; color: var(--text-sub); cursor: pointer; border-radius: 2px; transition: all .12s; }
+    .ch-sort-btn.active { background: var(--ac); color: #fff; border-color: var(--ac); }
+    .vol-hd { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #f9f9f9; border: 1px solid var(--border); border-radius: 2px; cursor: pointer; margin-bottom: 8px; }
+    .vol-hd:not(:first-child) { margin-top: 16px; }
+    .vol-icon { font-size: 13px; color: var(--ac); font-weight: 700; }
+    .vol-name { font-size: 13px; font-weight: 700; flex: 1; }
+    .vol-count { font-size: 12px; color: var(--text-muted); }
+    .vol-arrow { font-size: 12px; color: var(--text-muted); transition: transform .2s; }
+    .ch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-bottom: 4px; }
+    .ch-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-bottom: 1px solid #f5f5f5; cursor: pointer; transition: background .1s; overflow: hidden; }
+    .ch-item:hover { background: #fafafa; }
+    .ch-item:hover .ch-name { color: var(--ac); }
+    .ch-no { font-size: 11px; color: var(--text-muted); flex-shrink: 0; width: 38px; }
+    .ch-name { font-size: 13px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ch-date { font-size: 11px; color: var(--text-muted); flex-shrink: 0; white-space: nowrap; }
+    .ch-free { font-size: 10px; background: #e8f5e9; color: #2e7d32; padding: 1px 5px; border-radius: 1px; flex-shrink: 0; font-weight: 600; }
+    .ch-lock { font-size: 10px; background: #fff3e0; color: #e65100; padding: 1px 5px; border-radius: 1px; flex-shrink: 0; }
+    .show-all-btn { display: block; text-align: center; padding: 10px; border: 1px dashed var(--border); color: var(--text-muted); font-size: 13px; margin-top: 12px; transition: all .15s; }
+    .show-all-btn:hover { border-color: var(--ac); color: var(--ac); }
+
+    /* ── RATING SECTION ── */
+    .rating-section { padding: 20px; }
+    .rating-section h3 { font-size: 15px; font-weight: 700; border-left: 3px solid var(--ac); padding-left: 8px; margin-bottom: 16px; }
+    .rating-summary { display: flex; gap: 32px; align-items: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+    .rating-big { text-align: center; }
+    .rating-big .num { font-size: 48px; font-weight: 900; color: #f59e0b; line-height: 1; }
+    .rating-big .stars { font-size: 18px; margin: 4px 0; }
+    .rating-big .sub { font-size: 12px; color: var(--text-muted); }
+    .rating-bars { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+    .rbar { display: flex; align-items: center; gap: 8px; }
+    .rbar-label { font-size: 12px; color: var(--text-muted); width: 30px; text-align: right; flex-shrink: 0; }
+    .rbar-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
+    .rbar-fill { height: 100%; background: #f59e0b; border-radius: 3px; }
+    .rbar-count { font-size: 11px; color: var(--text-muted); width: 32px; flex-shrink: 0; }
+
+    /* ── COMMENTS ── */
+    .comments-section { padding: 20px; }
+    .comments-section h3 { font-size: 15px; font-weight: 700; border-left: 3px solid var(--ac); padding-left: 8px; margin-bottom: 16px; }
+    .comment-input-row { display: flex; gap: 10px; margin-bottom: 20px; }
+    .comment-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg,#e5353e,#b82830); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+    .comment-input-wrap { flex: 1; }
+    .comment-input-wrap textarea { width: 100%; border: 1px solid var(--border); border-radius: 3px; padding: 10px 12px; font-size: 13px; font-family: inherit; resize: none; outline: none; color: var(--text); }
+    .comment-input-wrap textarea:focus { border-color: var(--ac); }
+    .comment-submit { display: flex; justify-content: flex-end; margin-top: 6px; }
+    .btn-submit { background: var(--ac); color: #fff; border: none; padding: 7px 20px; font-size: 13px; font-weight: 600; border-radius: 3px; cursor: pointer; font-family: inherit; }
+    .btn-submit:hover { background: var(--ac-dk); }
+    .comment { display: flex; gap: 10px; padding: 14px 0; border-bottom: 1px solid #f5f5f5; }
+    .comment:last-child { border-bottom: none; }
+    .cmt-avatar { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #fff; }
+    .cmt-body { flex: 1; min-width: 0; }
+    .cmt-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .cmt-name { font-size: 13px; font-weight: 700; }
+    .cmt-badge { font-size: 10px; background: var(--ac-lt); color: var(--ac); border: 1px solid #ffc5c7; padding: 1px 6px; border-radius: 1px; font-weight: 600; }
+    .cmt-time { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+    .cmt-text { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+    .cmt-actions { display: flex; gap: 14px; margin-top: 6px; }
+    .cmt-act { font-size: 12px; color: var(--text-muted); cursor: pointer; }
+    .cmt-act:hover { color: var(--ac); }
+    .cmt-act.liked { color: var(--ac); }
+
+    /* ── SIDEBAR ── */
+    .sb-panel { background: var(--panel); border: 1px solid var(--border); }
+    .sb-hd { background: var(--panel-hd); padding: 10px 14px; display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+    .sb-hd h3 { font-size: 13px; font-weight: 700; color: var(--ac); flex: 1; }
+    .sb-hd a { font-size: 11px; color: var(--text-muted); }
+    .sb-hd a:hover { color: var(--ac); }
+    .sb-body { padding: 12px 14px; }
+
+    /* Author card */
+    .author-card { display: flex; flex-direction: column; align-items: center; padding: 16px 14px; text-align: center; }
+    .author-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg,#7f0000,#c62828); display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+    .author-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: #222; }
+    .author-stats { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.8; }
+    .author-stats strong { color: var(--text); }
+    .btn-follow { width: 100%; padding: 8px; border: 1px solid var(--ac); color: var(--ac); background: #fff; font-size: 13px; font-weight: 600; border-radius: 3px; cursor: pointer; font-family: inherit; transition: all .15s; }
+    .btn-follow:hover { background: var(--ac); color: #fff; }
+
+    /* Sidebar story list */
+    .sb-story { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f5f5f5; cursor: pointer; }
+    .sb-story:last-child { border-bottom: none; }
+    .sb-story:hover .sb-story-title { color: var(--ac); }
+    .sb-story-cov { width: 40px; height: 60px; border-radius: 2px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 1px 2px 5px rgba(0,0,0,.15); }
+    .sb-story-info { flex: 1; min-width: 0; }
+    .sb-story-title { font-size: 12px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 3px; }
+    .sb-story-meta { font-size: 11px; color: var(--text-muted); }
+    .sb-story-meta .ac { color: var(--ac); }
+
+    /* Tag cloud */
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 5px; padding: 10px 14px 12px; }
+    .tag-cloud a { font-size: 11px; background: #f5f5f5; color: #555; padding: 3px 8px; border: 1px solid #ebebeb; transition: all .12s; border-radius: 1px; }
+    .tag-cloud a:hover { background: var(--ac-lt); color: var(--ac); border-color: #ffc5c7; }
+
+    /* Rank widget */
+    .rank-widget { padding: 10px 14px 12px; }
+    .rank-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid #f7f7f7; }
+    .rank-row:last-child { border-bottom: none; }
+    .rank-no { width: 20px; height: 20px; border-radius: 2px; background: #eee; color: #999; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .rank-no.n1 { background: var(--ac); color: #fff; }
+    .rank-no.n2 { background: #e8892a; color: #fff; }
+    .rank-no.n3 { background: #e8b52a; color: #fff; }
+    .rank-title { flex: 1; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .rank-title:hover { color: var(--ac); }
+    .rank-num { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
+
+    /* ── FOOTER ── */
+    footer { background: #3d3d3d; color: #999; font-size: 12px; margin-top: 14px; }
+    .foot-nav { border-bottom: 1px solid #4a4a4a; }
+    .foot-nav .w { display: flex; flex-wrap: wrap; }
+    .foot-nav a { color: #999; padding: 11px 14px; display: block; transition: all .12s; }
+    .foot-nav a:hover { color: #fff; background: #4a4a4a; }
+    .foot-bottom .w { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; flex-wrap: wrap; gap: 8px; }
+    .foot-logo { font-size: 18px; font-weight: 900; color: #ccc; }
+    .foot-copy { font-size: 11px; color: #777; }
+    .foot-links { display: flex; gap: 12px; }
+    .foot-links a { color: #777; }
+    .foot-links a:hover { color: #ccc; }
+
+    /* ── TAB CONTENT ── */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="w">
+    <div>
+      <a href="homepage-demo.html">← Trang chủ</a>
+      <span class="sep">|</span>
+      <a href="#">Tải App Android</a>
+      <span class="sep">|</span>
+      <a href="#">Tải App iOS</a>
+      <span class="sep">|</span>
+      <a href="#">Trợ giúp</a>
+    </div>
+    <div>
+      <a href="#">Đăng nhập</a>
+      <span class="sep">|</span>
+      <a href="#">Đăng ký</a>
+      <span class="sep">|</span>
+      <a href="#">Tủ sách</a>
+      <span class="sep">|</span>
+      <a href="#">Lịch sử đọc</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="w">
+    <a href="homepage-demo.html" class="logo">
+      <img src="logo/logo-v1.svg" width="40" height="40" alt="" aria-hidden="true">
+      <span class="logo-txt">Cấm Địa<sub>Vạn thế giới trong một trang sách</sub></span>
+    </a>
+    <div class="search-bar">
+      <input type="text" placeholder="Nhập tên truyện, tác giả, thể loại..." />
+      <button>🔍 Tìm kiếm</button>
+    </div>
+    <div class="header-actions">
+      <a href="#" class="btn-login">Đăng nhập</a>
+      <a href="#" class="btn-reg">Đăng ký</a>
+    </div>
+  </div>
+</header>
+
+<!-- GENRE NAV -->
+<nav class="genre-nav">
+  <div class="w">
+    <a href="homepage-demo.html">Trang chủ</a>
+    <a href="#">Tiên Hiệp</a>
+    <a href="#">Kiếm Hiệp</a>
+    <a href="#" class="active">Ngôn Tình</a>
+    <a href="#">Đam Mỹ</a>
+    <a href="#">Huyền Huyễn</a>
+    <a href="#">Đô Thị</a>
+    <a href="#">Xuyên Không</a>
+    <a href="#">Trọng Sinh</a>
+    <a href="#">Hệ Thống</a>
+    <a href="#">Lịch Sử</a>
+    <a href="#">Võng Du</a>
+    <a href="#">Truyện Full</a>
+    <a href="#">Truyện Hot</a>
+    <a href="#" class="genre-more">≡ Tất cả thể loại</a>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="w">
+    <a href="homepage-demo.html">Trang chủ</a>
+    <span class="sep">›</span>
+    <a href="#">Ngôn Tình</a>
+    <span class="sep">›</span>
+    <a href="#">Đô Thị</a>
+    <span class="sep">›</span>
+    <span class="cur">Chàng Rể Chiến Thần</span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="w">
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- BOOK HEADER -->
+      <div class="panel">
+        <div class="book-hd">
+          <!-- Cover -->
+          <div class="cover-wrap">
+            <div class="cover">🌹</div>
+            <div class="cover-status">📖 Đang ra · 4.136 ch</div>
+          </div>
+
+          <!-- Info -->
+          <div class="book-info">
+            <div class="book-title">Chàng Rể Chiến Thần</div>
+
+            <div class="book-meta-row">
+              <span style="font-size:13px;color:var(--text-muted)">Tác giả:</span>
+              <a href="#" class="author-link">Tiếu Ngạo Dư Sinh</a>
+              <span class="genre-badge">Ngôn Tình</span>
+              <span class="genre-badge">Đô Thị</span>
+              <span class="status-on">⚡ Đang ra</span>
+            </div>
+
+            <div class="rating-row">
+              <span class="stars">★★★★★</span>
+              <span class="rating-val">4.7</span>
+              <span class="rating-count">/ 5.0 &nbsp;·&nbsp; 1.284 đánh giá</span>
+            </div>
+
+            <div class="stats-row">
+              <div class="stat">
+                <div class="stat-val">18.3M</div>
+                <div class="stat-label">👁 Lượt đọc</div>
+              </div>
+              <div class="stat">
+                <div class="stat-val">1.2M</div>
+                <div class="stat-label">🔖 Đánh dấu</div>
+              </div>
+              <div class="stat">
+                <div class="stat-val">4.136</div>
+                <div class="stat-label">📑 Chương</div>
+              </div>
+              <div class="stat">
+                <div class="stat-val">8.2M</div>
+                <div class="stat-label">📝 Số từ</div>
+              </div>
+              <div class="stat">
+                <div class="stat-val">Hàng ngày</div>
+                <div class="stat-label">⏰ Cập nhật</div>
+              </div>
+            </div>
+
+            <div class="synopsis-wrap">
+              <p id="synopsis-short">
+                Lý Phong — một chàng trai bình thường lấy vợ giàu và bị cả gia đình nhà vợ khinh thường, gọi là "chàng rể ăn bám". Nhưng không ai biết rằng, anh chính là Chiến Thần số một của liên minh phương Đông, người đã một mình chống đỡ ba quốc gia, danh chấn thiên hạ.
+                <br><br>
+                Vì lời hứa với người thầy đã khuất, anh ẩn mình trong cuộc sống bình thường. Nhưng khi những kẻ thù từ quá khứ bắt đầu đe dọa gia đình nhỏ của anh, Chiến Thần thức tỉnh — và cả thế giới sẽ phải run sợ trước cơn thịnh nộ của anh ta...
+              </p>
+              <span class="synopsis-toggle" onclick="toggleSynopsis()">▲ Thu gọn</span>
+            </div>
+
+            <div class="tags-row">
+              <a href="#" class="tag">#chàng-rể</a>
+              <a href="#" class="tag">#chiến-thần</a>
+              <a href="#" class="tag">#ẩn thân</a>
+              <a href="#" class="tag">#ngôn-tình</a>
+              <a href="#" class="tag">#đô-thị</a>
+              <a href="#" class="tag">#cường-giả</a>
+              <a href="#" class="tag">#hôn-nhân</a>
+              <a href="#" class="tag">#full</a>
+            </div>
+
+            <div class="action-row">
+              <a href="chapter-demo.html" class="btn-read">▶ Đọc ngay</a>
+              <a href="chapter-demo.html" class="btn-outline">📖 Đọc từ đầu</a>
+              <a href="#" class="btn-bookmark" id="bookmarkBtn" onclick="toggleBookmark(event)">🔖 Thêm vào tủ sách</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tab-bar">
+          <div class="tab-item active" onclick="switchTab('chapters', this)">Danh sách chương <span style="color:var(--text-muted);font-weight:400;font-size:12px">(4.136)</span></div>
+          <div class="tab-item" onclick="switchTab('intro', this)">Giới thiệu</div>
+          <div class="tab-item" onclick="switchTab('comments', this)">Bình luận <span style="color:var(--text-muted);font-weight:400;font-size:12px">(2.841)</span></div>
+        </div>
+
+        <!-- TAB: CHAPTERS -->
+        <div id="tab-chapters" class="tab-content active">
+          <div class="ch-panel">
+            <div class="ch-controls">
+              <div class="ch-total">Tổng cộng <strong>4.136 chương</strong> · Cập nhật lần cuối: <strong>hôm nay</strong></div>
+              <div class="ch-sort">
+                <button class="ch-sort-btn active" onclick="setSortBtn(this)">Mới → Cũ</button>
+                <button class="ch-sort-btn" onclick="setSortBtn(this)">Cũ → Mới</button>
+              </div>
+            </div>
+
+            <!-- Volume 1 -->
+            <div class="vol-hd" onclick="toggleVol(this)">
+              <span class="vol-icon">▼</span>
+              <span class="vol-name">Quyển 1: Chàng Rể Bị Khinh</span>
+              <span class="vol-count">Chương 1 – 312</span>
+            </div>
+            <div class="ch-grid" id="vol1">
+              <div class="ch-item"><span class="ch-no">Ch.312</span><span class="ch-name">Kẻ thù cuối cùng phải quỳ</span><span class="ch-date">2 giờ trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.311</span><span class="ch-name">Ta là Chiến Thần — hãy ghi nhớ điều đó</span><span class="ch-date">hôm qua</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.310</span><span class="ch-name">Đại chiến tại đỉnh tòa nhà</span><span class="ch-date">2 ngày trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.309</span><span class="ch-name">Vợ ta — không ai được động vào</span><span class="ch-date">3 ngày trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.308</span><span class="ch-name">Lộ diện thân phận thật</span><span class="ch-date">4 ngày trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.307</span><span class="ch-name">Nhà họ Lưu sụp đổ trong đêm</span><span class="ch-date">5 ngày trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.306</span><span class="ch-name">Một cuộc điện thoại rung chuyển cả thành phố</span><span class="ch-date">6 ngày trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.305</span><span class="ch-name">Quân đoàn Hắc Phong nghe lệnh ta</span><span class="ch-date">7 ngày trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.304</span><span class="ch-name">Tướng quân xuất thế, vạn người kính phục</span><span class="ch-date">8 ngày trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.303</span><span class="ch-name">Gã chàng rể không ai ngờ tới</span><span class="ch-date">9 ngày trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.302</span><span class="ch-name">Hai năm ẩn mình kết thúc hôm nay</span><span class="ch-date">10 ngày trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.301</span><span class="ch-name">Đêm nay, Chiến Thần trở lại</span><span class="ch-date">11 ngày trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.300</span><span class="ch-name">Lời thề với người thầy quá cố</span><span class="ch-date">12 ngày trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.299</span><span class="ch-name">Nhớ lại quá khứ — máu và vinh quang</span><span class="ch-date">13 ngày trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item" onclick="location.href='chapter-demo.html'"><span class="ch-no">Ch.1</span><span class="ch-name">Chàng rể ăn bám của gia đình họ Trần</span><span class="ch-date">3 năm trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.2</span><span class="ch-name">Bị cả nhà khinh thường trong bữa cơm</span><span class="ch-date">3 năm trước</span><span class="ch-free">Miễn phí</span></div>
+            </div>
+
+            <!-- Volume 2 -->
+            <div class="vol-hd" onclick="toggleVol(this)">
+              <span class="vol-icon">▶</span>
+              <span class="vol-name">Quyển 2: Chiến Thần Thức Tỉnh</span>
+              <span class="vol-count">Chương 313 – 980</span>
+            </div>
+            <div class="ch-grid" id="vol2" style="display:none">
+              <div class="ch-item"><span class="ch-no">Ch.980</span><span class="ch-name">Đại hội võ lâm — không ai địch nổi</span><span class="ch-date">2 tháng trước</span><span class="ch-free">Miễn phí</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.979</span><span class="ch-name">Bí mật của tổ chức Rồng Đen</span><span class="ch-date">2 tháng trước</span><span class="ch-lock">🔒 VIP</span></div>
+              <div class="ch-item"><span class="ch-no">Ch.313</span><span class="ch-name">Chiến thần bước ra từ bóng tối</span><span class="ch-date">2 năm trước</span><span class="ch-free">Miễn phí</span></div>
+            </div>
+
+            <!-- Volume 3 collapsed -->
+            <div class="vol-hd" onclick="toggleVol(this)">
+              <span class="vol-icon">▶</span>
+              <span class="vol-name">Quyển 3: Bá Đồ Tranh Hùng</span>
+              <span class="vol-count">Chương 981 – 2.100</span>
+            </div>
+            <div class="ch-grid" style="display:none">
+              <div class="ch-item"><span class="ch-no">Ch.981</span><span class="ch-name">Thế giới ngầm run sợ</span><span class="ch-date">18 tháng trước</span><span class="ch-lock">🔒 VIP</span></div>
+            </div>
+
+            <div class="vol-hd" onclick="toggleVol(this)">
+              <span class="vol-icon">▶</span>
+              <span class="vol-name">Quyển 4: Đỉnh Cao Quyền Lực</span>
+              <span class="vol-count">Chương 2.101 – 3.500</span>
+            </div>
+            <div class="ch-grid" style="display:none">
+              <div class="ch-item"><span class="ch-no">Ch.2101</span><span class="ch-name">Trở thành ông chủ tập đoàn</span><span class="ch-date">12 tháng trước</span><span class="ch-lock">🔒 VIP</span></div>
+            </div>
+
+            <div class="vol-hd" onclick="toggleVol(this)">
+              <span class="vol-icon">▶</span>
+              <span class="vol-name">Quyển 5: Kết Cục Viên Mãn</span>
+              <span class="vol-count">Chương 3.501 – 4.136</span>
+            </div>
+            <div class="ch-grid" style="display:none">
+              <div class="ch-item"><span class="ch-no">Ch.4136</span><span class="ch-name">Hạnh phúc bên gia đình nhỏ</span><span class="ch-date">2 giờ trước</span><span class="ch-free">Miễn phí</span></div>
+            </div>
+
+            <a href="#" class="show-all-btn">Xem tất cả 4.136 chương →</a>
+          </div>
+        </div>
+
+        <!-- TAB: INTRO -->
+        <div id="tab-intro" class="tab-content">
+          <div style="padding:24px">
+            <h3 style="font-size:15px;font-weight:700;border-left:3px solid var(--ac);padding-left:8px;margin-bottom:16px">Giới thiệu</h3>
+            <div style="font-size:14px;color:var(--text-sub);line-height:1.9">
+              <p style="margin-bottom:12px">Lý Phong — một chàng trai bình thường lấy vợ giàu và bị cả gia đình nhà vợ khinh thường, gọi là "chàng rể ăn bám". Nhưng không ai biết rằng, anh chính là Chiến Thần số một của liên minh phương Đông, người đã một mình chống đỡ ba quốc gia, danh chấn thiên hạ.</p>
+              <p style="margin-bottom:12px">Vì lời hứa với người thầy đã khuất, anh ẩn mình trong cuộc sống bình thường bên cạnh người vợ xinh đẹp nhưng lạnh lùng. Ba năm sống cùng nhau, anh lo toan mọi việc nhà, cam chịu mọi sự khinh miệt từ gia đình họ Trần, chỉ để giữ trọn lời thề.</p>
+              <p style="margin-bottom:12px">Nhưng khi tổ chức Rồng Đen bắt đầu nhắm vào gia đình anh, khi vợ anh bị đẩy vào tình cảnh nguy hiểm — Chiến Thần thức tỉnh. Và cả thế giới sẽ phải chứng kiến, kẻ bị gọi là "chàng rể ăn bám" thật sự là ai.</p>
+              <p><em>"Ta đã nhẫn nhịn ba năm, không phải vì ta sợ, mà vì ta chọn bình yên. Nhưng các ngươi đã chạm đến giới hạn cuối cùng của ta."</em></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: COMMENTS -->
+        <div id="tab-comments" class="tab-content">
+          <!-- Rating summary -->
+          <div class="rating-section">
+            <h3>Đánh giá</h3>
+            <div class="rating-summary">
+              <div class="rating-big">
+                <div class="num">4.7</div>
+                <div class="stars">★★★★★</div>
+                <div class="sub">1.284 đánh giá</div>
+              </div>
+              <div class="rating-bars">
+                <div class="rbar"><span class="rbar-label">5 ★</span><div class="rbar-track"><div class="rbar-fill" style="width:74%"></div></div><span class="rbar-count">951</span></div>
+                <div class="rbar"><span class="rbar-label">4 ★</span><div class="rbar-track"><div class="rbar-fill" style="width:18%"></div></div><span class="rbar-count">231</span></div>
+                <div class="rbar"><span class="rbar-label">3 ★</span><div class="rbar-track"><div class="rbar-fill" style="width:5%"></div></div><span class="rbar-count">64</span></div>
+                <div class="rbar"><span class="rbar-label">2 ★</span><div class="rbar-track"><div class="rbar-fill" style="width:2%"></div></div><span class="rbar-count">25</span></div>
+                <div class="rbar"><span class="rbar-label">1 ★</span><div class="rbar-track"><div class="rbar-fill" style="width:1%"></div></div><span class="rbar-count">13</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comments -->
+          <div class="comments-section" style="border-top:1px solid var(--border)">
+            <h3>Bình luận <span style="font-size:13px;font-weight:400;color:var(--text-muted)">(2.841)</span></h3>
+
+            <div class="comment-input-row">
+              <div class="comment-avatar">K</div>
+              <div class="comment-input-wrap">
+                <textarea rows="3" placeholder="Chia sẻ cảm nhận của bạn về truyện này..."></textarea>
+                <div class="comment-submit">
+                  <button class="btn-submit">Gửi bình luận</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="comment">
+              <div class="cmt-avatar" style="background:linear-gradient(135deg,#1a3a6b,#1565c0)">T</div>
+              <div class="cmt-body">
+                <div class="cmt-header">
+                  <span class="cmt-name">TieuBach2k</span>
+                  <span class="cmt-badge">VIP</span>
+                  <span class="cmt-time">2 giờ trước</span>
+                </div>
+                <div class="cmt-text">Chương mới nhất cực đỉnh! Cái cảnh Lý Phong lộ diện thân phận trước mặt nhà họ Trần mà tác giả viết... đọc mà người cứ nổi da gà. Đợi chương này cả tháng rồi!</div>
+                <div class="cmt-actions">
+                  <span class="cmt-act liked">👍 328</span>
+                  <span class="cmt-act">💬 Trả lời (12)</span>
+                  <span class="cmt-act">⚑ Báo cáo</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="comment">
+              <div class="cmt-avatar" style="background:linear-gradient(135deg,#004d1a,#2e7d32)">M</div>
+              <div class="cmt-body">
+                <div class="cmt-header">
+                  <span class="cmt-name">MinhKhoi_Reader</span>
+                  <span class="cmt-time">5 giờ trước</span>
+                </div>
+                <div class="cmt-text">Nói thật truyện kiểu này đọc rất dễ nghiện dù biết là cliché 😂 Lý Phong bị ức hiếp suốt 300 chương mà không lộ diện thì cũng hơi quá, nhưng khi anh ấy ra tay thì mãn nhãn thật sự. Cốt truyện đơn giản nhưng được viết tốt.</div>
+                <div class="cmt-actions">
+                  <span class="cmt-act liked">👍 147</span>
+                  <span class="cmt-act">💬 Trả lời (5)</span>
+                  <span class="cmt-act">⚑ Báo cáo</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="comment">
+              <div class="cmt-avatar" style="background:linear-gradient(135deg,#4a0072,#7b1fa2)">L</div>
+              <div class="cmt-body">
+                <div class="cmt-header">
+                  <span class="cmt-name">LinhLinhFan</span>
+                  <span class="cmt-badge">Top fan</span>
+                  <span class="cmt-time">hôm qua</span>
+                </div>
+                <div class="cmt-text">Mình đọc từ chương 1 lúc mới ra, giờ đã 4136 chương rồi mà vẫn theo đến tận đây. Tác giả Tiếu Ngạo Dư Sinh viết chắc tay, nhân vật phụ cũng có chiều sâu chứ không chỉ làm nền. 5 sao không tiếc!</div>
+                <div class="cmt-actions">
+                  <span class="cmt-act">👍 89</span>
+                  <span class="cmt-act">💬 Trả lời (3)</span>
+                  <span class="cmt-act">⚑ Báo cáo</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="comment">
+              <div class="cmt-avatar" style="background:linear-gradient(135deg,#3e2600,#f57f17)">H</div>
+              <div class="cmt-body">
+                <div class="cmt-header">
+                  <span class="cmt-name">HoangAnhDoc</span>
+                  <span class="cmt-time">2 ngày trước</span>
+                </div>
+                <div class="cmt-text">Khóa chương từ chương 980 thì hơi tiếc. Nhưng mà phần miễn phí đọc cũng đủ hiểu câu chuyện rồi. Nếu thật sự muốn xem kết thì unlock thôi.</div>
+                <div class="cmt-actions">
+                  <span class="cmt-act">👍 54</span>
+                  <span class="cmt-act">💬 Trả lời</span>
+                  <span class="cmt-act">⚑ Báo cáo</span>
+                </div>
+              </div>
+            </div>
+
+            <a href="#" class="show-all-btn">Xem thêm 2.837 bình luận →</a>
+          </div>
+        </div>
+      </div><!-- /panel -->
+
+    </div><!-- /content -->
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- Author -->
+      <div class="sb-panel">
+        <div class="author-card">
+          <div class="author-avatar">✍️</div>
+          <div class="author-name">Tiếu Ngạo Dư Sinh</div>
+          <div class="author-stats">
+            <strong>12</strong> bộ truyện &nbsp;·&nbsp; <strong>48.2M</strong> lượt đọc<br>
+            <strong>3.2M</strong> độc giả theo dõi
+          </div>
+          <button class="btn-follow">+ Theo dõi tác giả</button>
+        </div>
+      </div>
+
+      <!-- Tags -->
+      <div class="sb-panel">
+        <div class="sb-hd"><h3>🏷️ Tags</h3></div>
+        <div class="tag-cloud">
+          <a href="#">Chàng rể</a><a href="#">Ẩn thân</a><a href="#">Chiến thần</a>
+          <a href="#">Đô thị</a><a href="#">Hôn nhân</a><a href="#">Cường giả</a>
+          <a href="#">Full</a><a href="#">HE</a><a href="#">Ngôn tình</a>
+        </div>
+      </div>
+
+      <!-- Ranking position -->
+      <div class="sb-panel">
+        <div class="sb-hd"><h3>📊 Vị trí BXH</h3><a href="#">Xem tất cả →</a></div>
+        <div class="rank-widget">
+          <div class="rank-row">
+            <span class="rank-no n1">1</span>
+            <span class="rank-title">BXH Ngôn Tình tháng này</span>
+            <span class="rank-num">🏆 #1</span>
+          </div>
+          <div class="rank-row">
+            <span class="rank-no n3">3</span>
+            <span class="rank-title">BXH Toàn site tuần này</span>
+            <span class="rank-num">#3</span>
+          </div>
+          <div class="rank-row">
+            <span class="rank-no" style="background:#e5353e;color:#fff">1</span>
+            <span class="rank-title">BXH Hot nhất hôm nay</span>
+            <span class="rank-num">🔥 #1</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Similar stories -->
+      <div class="sb-panel">
+        <div class="sb-hd"><h3>📚 Truyện tương tự</h3></div>
+        <div class="sb-body">
+          <div class="sb-story">
+            <div class="sb-story-cov" style="background:linear-gradient(135deg,#1a3a6b,#1565c0)">⚕️</div>
+            <div class="sb-story-info">
+              <div class="sb-story-title">Thần Y Trở Lại</div>
+              <div class="sb-story-meta">Đô Thị · <span class="ac">4.690 ch</span></div>
+              <div class="sb-story-meta">21.6M lượt đọc</div>
+            </div>
+          </div>
+          <div class="sb-story">
+            <div class="sb-story-cov" style="background:linear-gradient(135deg,#1a0060,#3949ab)">💪</div>
+            <div class="sb-story-info">
+              <div class="sb-story-title">Chàng Rể Vô Dụng Là Tiên Tôn</div>
+              <div class="sb-story-meta">Trọng Sinh · <span class="ac">1.704 ch</span></div>
+              <div class="sb-story-meta">11.2M lượt đọc</div>
+            </div>
+          </div>
+          <div class="sb-story">
+            <div class="sb-story-cov" style="background:linear-gradient(135deg,#3e2600,#f57f17)">👨‍⚕️</div>
+            <div class="sb-story-info">
+              <div class="sb-story-title">Chàng Rể Bác Sĩ</div>
+              <div class="sb-story-meta">Ngôn Tình · <span class="ac">2.431 ch</span></div>
+              <div class="sb-story-meta">9.8M lượt đọc</div>
+            </div>
+          </div>
+          <div class="sb-story">
+            <div class="sb-story-cov" style="background:linear-gradient(135deg,#1b004a,#6a1b9a)">🌸</div>
+            <div class="sb-story-info">
+              <div class="sb-story-title">Người Chồng Vô Dụng Của Nữ Thần</div>
+              <div class="sb-story-meta">Ngôn Tình · <span class="ac">5.290 ch</span></div>
+              <div class="sb-story-meta">11.2M lượt đọc</div>
+            </div>
+          </div>
+          <div class="sb-story">
+            <div class="sb-story-cov" style="background:linear-gradient(135deg,#7f0000,#c62828)">⚔️</div>
+            <div class="sb-story-info">
+              <div class="sb-story-title">Vương Bài Hôn Phu</div>
+              <div class="sb-story-meta">Ngôn Tình · <span class="ac">882 ch</span></div>
+              <div class="sb-story-meta">6.3M lượt đọc</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /sidebar -->
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-nav">
+    <div class="w">
+      <a href="#">Trang chủ</a><a href="#">Đọc truyện</a><a href="#">Bảng xếp hạng</a>
+      <a href="#">Truyện Full</a><a href="#">Truyện Hot</a><a href="#">Mới nhất</a>
+      <a href="#">Ngôn Tình</a><a href="#">Tiên Hiệp</a><a href="#">Huyền Huyễn</a>
+      <a href="#">Xuyên Không</a><a href="#">Đăng truyện</a><a href="#">Liên hệ</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div class="w">
+      <div class="foot-logo">Cấm Địa</div>
+      <div class="foot-copy">© 2026 Cấm Địa – Vạn thế giới trong một trang sách. Bảo lưu mọi quyền.</div>
+      <div class="foot-links">
+        <a href="#">Chính sách bảo mật</a>
+        <a href="#">Điều khoản</a>
+        <a href="#">DMCA</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Tab switching
+  function switchTab(name, el) {
+    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('tab-' + name).classList.add('active');
+  }
+
+  // Volume toggle
+  function toggleVol(hd) {
+    const icon = hd.querySelector('.vol-icon');
+    const grid = hd.nextElementSibling;
+    const open = grid.style.display !== 'none';
+    grid.style.display = open ? 'none' : 'grid';
+    icon.textContent = open ? '▶' : '▼';
+  }
+
+  // Sort btn
+  function setSortBtn(btn) {
+    document.querySelectorAll('.ch-sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  // Bookmark toggle
+  function toggleBookmark(e) {
+    e.preventDefault();
+    const btn = document.getElementById('bookmarkBtn');
+    const on = btn.dataset.on === '1';
+    btn.dataset.on = on ? '0' : '1';
+    btn.textContent = on ? '🔖 Thêm vào tủ sách' : '✅ Đã thêm vào tủ sách';
+    btn.style.background = on ? '' : '#e8f5e9';
+    btn.style.color = on ? '' : '#2e7d32';
+    btn.style.borderColor = on ? '' : '#a5d6a7';
+  }
+
+  // Synopsis toggle
+  let synOpen = true;
+  function toggleSynopsis() {
+    const el = document.querySelector('.synopsis-toggle');
+    synOpen = !synOpen;
+    el.textContent = synOpen ? '▲ Thu gọn' : '▼ Đọc thêm';
+  }
+</script>
+</body>
+</html>

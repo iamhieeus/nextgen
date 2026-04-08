@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ch.1: Chàng Rể Ăn Bám – Chàng Rể Chiến Thần – Cấm Địa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ac:        #e5353e;
+      --ac-dk:     #b82830;
+      --ac-lt:     #fff0f0;
+      --bg:        #ebe6da;
+      --panel:     #f5f1e8;
+      --border:    #e5e5e5;
+      --text:      #2a2a2a;
+      --text-sub:  #555555;
+      --text-muted:#999999;
+    }
+
+    /* ── NIGHT MODE ── */
+    body.night { --bg: #1c1b18; --panel: #26251f; --border: #3a3830; --text: #c8b89a; --text-sub: #a89070; --text-muted: #706858; }
+    body.night .lf-btn { background: #2e2d26; border-color: #3a3830; color: #706858; }
+    body.night .rt-btn { background: #2e2d26; border-color: #3a3830; color: #a89070; }
+    body.night .rd-header { background: #1c1b18; }
+    body.night .bi-publisher { background: #1f1e18; }
+    body.night .hot-bar { background: var(--panel); }
+    body.night .ch-nav a { background: var(--panel); }
+    body.night .scan-btn { background: var(--panel); border-color: var(--border); color: var(--text-sub); }
+    body.night .pcmt { background: #3a3830; color: #706858; }
+
+    body {
+      font-family: 'Be Vietnam Pro', "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+      transition: background .3s, color .3s;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: var(--ac); }
+
+    /* ── FIXED LEFT PANEL ── */
+    .left-float {
+      position: fixed;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+    }
+    .lf-btn {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      background: rgba(255,255,255,.88);
+      border: 1px solid #d8d4cc;
+      border-left: none;
+      color: #999;
+      font-size: 12px;
+      padding: 13px 7px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+    .lf-btn + .lf-btn { border-top: none; }
+    .lf-btn:hover { background: #fff; color: var(--ac); border-color: #ffb3b5; }
+
+    /* ── FIXED RIGHT TOOLBAR ── */
+    .right-toolbar {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .rt-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      width: 52px;
+      height: 56px;
+      background: var(--panel);
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      color: var(--text-sub);
+      font-size: 10.5px;
+      cursor: pointer;
+      box-shadow: 0 1px 5px rgba(0,0,0,.07);
+      transition: all .15s;
+    }
+    .rt-btn:hover { border-color: var(--ac); color: var(--ac); }
+    .rt-btn.active { border-color: var(--ac); color: var(--ac); background: var(--ac-lt); }
+    .rt-icon { font-size: 18px; line-height: 1; }
+    #to-top { display: none; }
+
+    /* ── SETTINGS PANEL ── */
+    .settings-panel {
+      position: fixed;
+      right: 80px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 300;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.14);
+      padding: 16px;
+      width: 220px;
+      display: none;
+    }
+    .settings-panel.open { display: block; }
+    .sp-label { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; }
+    .sp-row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+    .sp-row:last-child { margin-bottom: 0; }
+    .sp-btn { flex: 1; padding: 7px 0; text-align: center; font-size: 13px; background: #f5f5f5; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; color: var(--text-sub); transition: all .12s; }
+    .sp-btn:hover, .sp-btn.active { background: var(--ac-lt); border-color: var(--ac); color: var(--ac); }
+    .sp-slider { flex: 1; accent-color: var(--ac); }
+
+    /* ── MINIMAL HEADER ── */
+    .rd-header {
+      background: var(--bg);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 100%;
+    }
+    .rd-logo { display: flex; align-items: center; gap: 9px; }
+    .logo-txt { font-size: 20px; font-weight: 900; color: var(--ac); letter-spacing: -.5px; line-height: 1.15; }
+    .logo-txt sub { font-size: 10px; font-weight: 400; color: #aaa; display: block; margin-top: 2px; letter-spacing: .3px; font-style: normal; }
+    .rd-login { background: var(--ac); color: #fff !important; padding: 7px 20px; border-radius: 4px; font-size: 13px; font-weight: 600; transition: background .15s; }
+    .rd-login:hover { background: var(--ac-dk) !important; }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--ac); }
+    .breadcrumb .sep { color: #c8c0b4; }
+    .breadcrumb .cur { color: var(--text-sub); }
+
+    /* ── READER WRAP ── */
+    .reader-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding-bottom: 60px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── BOOK INTRO ── */
+    .book-intro {
+      background: #f5f1e8;
+      padding: 36px 40px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: background .3s;
+    }
+    .bi-cover {
+      width: 128px;
+      height: 171px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 58px;
+      box-shadow: 3px 5px 18px rgba(0,0,0,.25);
+      margin-bottom: 22px;
+      flex-shrink: 0;
+    }
+    .bi-title { font-size: 28px; font-weight: 900; color: var(--text); margin-bottom: 8px; letter-spacing: -.3px; }
+    .bi-author { font-size: 14px; color: var(--text-muted); margin-bottom: 22px; }
+    .bi-stats { display: flex; gap: 52px; margin-bottom: 16px; }
+    .bi-stat strong { display: block; font-size: 16px; font-weight: 700; color: var(--text); }
+    .bi-stat span { font-size: 12px; color: var(--text-muted); margin-top: 3px; display: block; }
+    .bi-slogan { font-size: 13px; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px; }
+    .bi-publisher {
+      background: #ece7db;
+      border: 1px solid #d8d2c4;
+      border-radius: 4px;
+      padding: 13px 22px;
+      font-size: 12px;
+      color: #aaa;
+      line-height: 2;
+      transition: background .3s, border-color .3s;
+    }
+    .bi-publisher-logo { font-size: 20px; margin-bottom: 3px; }
+
+    /* ── HOT BAR ── */
+    .hot-bar {
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      border-bottom: 3px solid #e8e0d4;
+      padding: 10px 24px;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background .3s;
+    }
+
+    /* ── CHAPTER CARD ── */
+    .ch-card { background: var(--panel); transition: background .3s; }
+
+    .ch-head { padding: 34px 48px 22px; border-bottom: 1px solid var(--border); }
+    .ch-title-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
+    .ch-title { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1.35; flex: 1; }
+    .cmt-cnt {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #f0f0ec;
+      color: #aaa;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 12px;
+      min-width: 34px;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .ch-meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--text-muted); }
+    .ch-meta span { display: flex; align-items: center; gap: 4px; }
+
+    /* ── CHAPTER BODY ── */
+    .ch-body {
+      padding: 30px 48px 40px;
+      font-size: 17px;
+      line-height: 2;
+      color: var(--text);
+      transition: color .3s;
+    }
+    .ch-body p { margin-bottom: 1.1em; }
+    .ch-body p:last-child { margin-bottom: 0; }
+
+    .pcmt {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #eeebe4;
+      color: #bbb;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 1px 6px;
+      border-radius: 3px;
+      min-width: 26px;
+      margin-left: 4px;
+      cursor: pointer;
+      vertical-align: middle;
+      transition: background .12s, color .12s;
+    }
+    .pcmt:hover { background: #ddd9d0; color: #888; }
+
+    .ch-keyword { font-weight: 700; font-size: 17px; text-align: center; color: var(--text); letter-spacing: .5px; margin: 1.3em 0; }
+    .ch-divider { text-align: center; color: #c0b8a8; margin: 24px 0 18px; font-size: 18px; letter-spacing: 6px; }
+    .ch-ps { font-size: 14px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 18px; margin-top: 10px; line-height: 1.8; }
+
+    /* ── AUTHOR NOTE ── */
+    .author-note {
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      padding: 16px 48px 20px;
+      transition: background .3s;
+    }
+    .an-label { font-size: 12px; color: var(--text-muted); margin-bottom: 7px; }
+    .an-label a { color: var(--ac); }
+    .an-content { font-size: 14px; color: var(--text-sub); line-height: 1.8; }
+
+    /* ── TIP SECTION ── */
+    .tip-section {
+      background: var(--panel);
+      border-top: 10px solid var(--bg);
+      padding: 28px 48px 26px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      transition: background .3s;
+    }
+    .tip-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--ac);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 13px 38px;
+      border-radius: 26px;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      transition: background .15s;
+    }
+    .tip-btn:hover { background: var(--ac-dk); }
+    .tip-cnt { font-size: 12px; font-weight: 400; opacity: .85; }
+    .tip-avatars { display: flex; justify-content: center; gap: 6px; }
+    .tip-av {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      border: 2px solid var(--panel);
+      box-shadow: 0 1px 5px rgba(0,0,0,.14);
+    }
+    .scan-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text-muted);
+      font-size: 13px;
+      padding: 9px 22px;
+      border-radius: 22px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all .15s;
+    }
+    .scan-btn:hover { border-color: var(--ac); color: var(--ac); }
+
+    /* ── CHAPTER NAVIGATION ── */
+    .ch-nav {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 10px solid var(--bg);
+    }
+    .ch-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-sub);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      transition: background .12s, color .12s;
+    }
+    .ch-nav a:first-child { border-right: none; }
+    .ch-nav .next { color: var(--ac); }
+    .ch-nav a:hover { background: var(--ac-lt); color: var(--ac); }
+  </style>
+</head>
+<body>
+
+<!-- ── FIXED LEFT PANEL ── -->
+<div class="left-float">
+  <a class="lf-btn" href="#">Phản Hồi</a>
+  <a class="lf-btn" href="#">Hướng Dẫn</a>
+  <a class="lf-btn" href="#">Báo Cáo</a>
+  <a class="lf-btn" href="#">Phiên Cũ</a>
+</div>
+
+<!-- ── FIXED RIGHT TOOLBAR ── -->
+<div class="right-toolbar">
+  <a class="rt-btn" href="story-demo.html" title="Mục lục chương">
+    <span class="rt-icon">☰</span>
+    <span>Mục Lục</span>
+  </a>
+  <a class="rt-btn" href="story-demo.html" title="Chi tiết truyện">
+    <span class="rt-icon">📖</span>
+    <span>Chi Tiết</span>
+  </a>
+  <a class="rt-btn" href="#" title="Thêm vào tủ sách">
+    <span class="rt-icon">📚</span>
+    <span>Tủ Sách</span>
+  </a>
+  <a class="rt-btn" href="#" title="Bình chọn">
+    <span class="rt-icon">🗳️</span>
+    <span>Bình Chọn</span>
+  </a>
+  <a class="rt-btn" href="#" id="night-btn" title="Chế độ ban đêm">
+    <span class="rt-icon">🌙</span>
+    <span>Ban Đêm</span>
+  </a>
+  <a class="rt-btn" href="#" id="settings-btn" title="Cài đặt đọc">
+    <span class="rt-icon">⚙️</span>
+    <span>Cài Đặt</span>
+  </a>
+  <a class="rt-btn" href="#" title="Tải ứng dụng">
+    <span class="rt-icon">📱</span>
+    <span>Ứng Dụng</span>
+  </a>
+  <a class="rt-btn" href="#" id="to-top" title="Lên đầu trang">
+    <span class="rt-icon">↑</span>
+    <span>Đầu Trang</span>
+  </a>
+</div>
+
+<!-- ── SETTINGS PANEL ── -->
+<div class="settings-panel" id="settings-panel">
+  <div class="sp-label">Cỡ chữ</div>
+  <div class="sp-row">
+    <button class="sp-btn" id="fs-sm">Nhỏ</button>
+    <button class="sp-btn active" id="fs-md">Vừa</button>
+    <button class="sp-btn" id="fs-lg">To</button>
+  </div>
+  <div class="sp-label">Giãn dòng</div>
+  <div class="sp-row">
+    <button class="sp-btn" id="lh-tight">Hẹp</button>
+    <button class="sp-btn active" id="lh-normal">Vừa</button>
+    <button class="sp-btn" id="lh-loose">Rộng</button>
+  </div>
+</div>
+
+<!-- ── MINIMAL HEADER ── -->
+<div class="rd-header">
+  <a href="homepage-demo.html" class="rd-logo">
+    <img src="logo/logo-v1.svg" width="32" height="32" alt="" aria-hidden="true">
+    <span class="logo-txt">Cấm Địa<sub>camdia.vn</sub></span>
+  </a>
+  <a href="#" class="rd-login">Đăng nhập</a>
+</div>
+
+<!-- ── BREADCRUMB ── -->
+<nav class="breadcrumb">
+  <a href="homepage-demo.html">Trang chủ</a>
+  <span class="sep">›</span>
+  <a href="#">Ngôn Tình</a>
+  <span class="sep">›</span>
+  <a href="story-demo.html">Chàng Rể Chiến Thần</a>
+  <span class="sep">›</span>
+  <span class="cur">Chương 1</span>
+</nav>
+
+<!-- ── READER WRAP ── -->
+<div class="reader-wrap">
+
+  <!-- BOOK INTRO -->
+  <div class="book-intro">
+    <div class="bi-cover" style="background: linear-gradient(135deg,#7f0000,#c62828)">🌹</div>
+    <div class="bi-title">Chàng Rể Chiến Thần</div>
+    <div class="bi-author">Tiếu Ngạo Dư Sinh 著</div>
+    <div class="bi-stats">
+      <div class="bi-stat">
+        <strong>Ngôn Tình</strong>
+        <span>Thể loại</span>
+      </div>
+      <div class="bi-stat">
+        <strong>28/02/2023</strong>
+        <span>Ngày đăng</span>
+      </div>
+      <div class="bi-stat">
+        <strong>18.3M</strong>
+        <span>Đang ra (chữ)</span>
+      </div>
+    </div>
+    <div class="bi-slogan">Cùng <strong>13.48 vạn</strong> độc giả khám phá hành trình của <em>Chàng Rể Chiến Thần</em></div>
+    <div class="bi-publisher">
+      <div class="bi-publisher-logo">📖</div>
+      Cấm Địa<br>
+      Tác phẩm được phát hành độc quyền trên Cấm Địa<br>
+      ©Bản quyền thuộc tác giả · Nghiêm cấm sao chép trái phép
+    </div>
+  </div>
+
+  <!-- HOT BAR -->
+  <div class="hot-bar">
+    🔥&ensp;Thảo luận sôi nổi: Chương này có <strong style="color:var(--text);margin:0 3px">1.766</strong> bình luận đoạn văn
+  </div>
+
+  <!-- CHAPTER CARD -->
+  <div class="ch-card">
+
+    <div class="ch-head">
+      <div class="ch-title-row">
+        <h1 class="ch-title">Chương 1: Chàng Rể Ăn Bám</h1>
+        <span class="cmt-cnt">302</span>
+      </div>
+      <div class="ch-meta">
+        <span>📖 Chàng Rể Chiến Thần</span>
+        <span>✍️ Tiếu Ngạo Dư Sinh</span>
+        <span>📝 4.687 chữ</span>
+        <span>🕐 28/02/2023 23:01</span>
+      </div>
+    </div>
+
+    <div class="ch-body" id="ch-body">
+
+      <p>Căn phòng tối tăm ở cuối hành lang nhà họ Trần — nơi người ta thường gọi bằng cái tên mỉa mai là "phòng ở nhờ" — chỉ rộng vỏn vẹn mười mét vuông. Một chiếc giường gỗ cũ, một bàn học bong tróc sơn, một cửa sổ nhỏ nhìn thẳng ra bức tường xi măng xám xịt. Lâm Phong ngồi đó, lặng thinh như tượng đá. <span class="pcmt">97</span></p>
+
+      <p>Bên ngoài phòng khách, tiếng chén chạm nhau lanh canh, tiếng cười nói rôm rả, mùi rượu ngoại thoang thoảng theo từng cơn gió. Hôm nay là sinh nhật lần thứ năm mươi của nhạc phụ — ông Trần Đức Thịnh. Đại gia đình họ Trần tụ hội đông đủ từ sáng sớm, trừ chàng rể Lâm Phong. <span class="pcmt">43</span></p>
+
+      <p>"Ông anh rể nhà mày đâu rồi, Ngọc Hà? Cưới về ba năm mà không kiếm được một xu, hôm nay sinh nhật bố vợ cũng không thấy mặt — ăn hại quá vậy!" <span class="pcmt">156</span></p>
+
+      <p>Đó là giọng Trần Đức Minh — em trai vợ anh — vừa nói vừa cười, không thèm hạ giọng. Tiếng cười nhạo theo sau câu đó vang khắp phòng khách. Lâm Phong nghe hết, mà không nhúc nhích. <span class="pcmt">28</span></p>
+
+      <p>Ba năm. Anh đã nghe quen những lời như vậy từ lâu rồi. <span class="pcmt">212</span></p>
+
+      <p>Anh đã quen với những ánh mắt khinh miệt, quen với việc bị phân công căn phòng tệ nhất, quen với cái cảm giác như một bóng ma vô hình trong căn nhà xa lạ này. Anh chọn im lặng — bởi vì có lý do để anh im lặng. Một lý do mà chưa đến lúc nói ra. <span class="pcmt">67</span></p>
+
+      <p>Điện thoại trong túi quần anh rung lên. Một tin nhắn, từ số máy lạ. <span class="pcmt">89</span></p>
+
+      <p class="ch-keyword">«THIẾT HUYẾT QUÂN ĐOÀN — THỐNG SOÁI YÊU CẦU TRỞ VỀ. TÌNH HUỐNG KHẨN CẤP.» <span class="pcmt">302</span></p>
+
+      <p>Lâm Phong đọc tin nhắn đó. Đọc một lần. Rồi khóa màn hình lại. <span class="pcmt">44</span></p>
+
+      <p>Anh đứng dậy, bước đến cửa sổ. Bên ngoài là phố xá Giang Thành náo nhiệt, xe cộ tấp nập như mọi ngày. Đây là thành phố anh đã sống ba năm qua trong vỏ bọc của người chồng vô dụng, kẻ ăn bám không có gì để tự hào. <span class="pcmt">118</span></p>
+
+      <p>Nhưng trước cái ngày anh chấp nhận hôn ước theo lời trăng trối của người thầy quá cố — trước tất cả điều đó — anh là ai? <span class="pcmt">234</span></p>
+
+      <p>Anh là Lâm Phong. Thống Soái Thiết Huyết — người đàn ông mà mười sáu quốc gia phải kiêng dè, mà những kẻ trong bóng tối chỉ nhắc đến tên cũng phải run. Năm năm chinh chiến, ba năm ẩn mình. Tất cả đều có mục đích. <span class="pcmt">567</span></p>
+
+      <p>Anh nhìn vào hình phản chiếu của mình trên mặt kính cửa sổ. Người đàn ông ba mươi tuổi với khuôn mặt bình thường đến mức không ai buồn nhìn lần hai. Vỏ bọc hoàn hảo nhất. <span class="pcmt">88</span></p>
+
+      <p>Cánh cửa phòng bị đẩy mạnh ra — không gõ. Trần Đức Minh bước vào, mùi rượu nồng nặc, ánh mắt trịch thượng quen thuộc: "Ê, Lâm Phong! Ra ngoài bưng thức ăn đi. Làm ơn có ích một chút không được à, hay suốt đời muốn sống bám nhà người ta?" <span class="pcmt">143</span></p>
+
+      <p>Lâm Phong quay đầu nhìn Đức Minh. Chỉ một cái nhìn, không nói gì. <span class="pcmt">72</span></p>
+
+      <p>Nhưng cái nhìn đó khiến Đức Minh — dù đang ngà ngà say — tự nhiên khựng lại. Chân anh ta không bước thêm được nữa. Trong đôi mắt hẹp của người đàn ông vẫn luôn cúi đầu kia thoáng qua một thứ gì đó mà anh ta chưa từng thấy bao giờ. Lạnh. Sâu. Như ánh mắt của một con thú đã ngủ đông đủ lâu và chuẩn bị thức dậy. <span class="pcmt">289</span></p>
+
+      <p>"Tôi hiểu rồi." Lâm Phong nói, giọng bình thản như gió. Anh bước qua cửa, không cần nhìn Đức Minh thêm lần nào. <span class="pcmt">56</span></p>
+
+      <p>Nhưng khi bước ra ngoài hành lang, anh lặng lẽ gõ một tin nhắn hồi âm, chỉ hai chữ. <span class="pcmt">198</span></p>
+
+      <p class="ch-keyword">«Tôi về.» <span class="pcmt">421</span></p>
+
+      <div class="ch-divider">— · —</div>
+
+      <p class="ch-ps">ps: Anh em ủng hộ mình với nhé! Nếu thấy hay, thả tim và theo dõi để không bỏ lỡ chương mới. Cảm ơn anh em rất nhiều 🙏</p>
+    </div>
+
+  </div><!-- /ch-card -->
+
+  <!-- AUTHOR NOTE -->
+  <div class="author-note">
+    <div class="an-label"><a href="#">Tiếu Ngạo Dư Sinh</a> · Tác giả nói:</div>
+    <div class="an-content">Mình mới bắt đầu bộ này, anh em đọc thấy hay nhớ để lại bình luận động viên mình nhé! Mỗi ngày mình cố gắng ra ít nhất 2 chương, anh em yên tâm theo dõi. Cảm ơn anh em đã ghé đọc! 📚</div>
+  </div>
+
+  <!-- TIP SECTION -->
+  <div class="tip-section">
+    <button class="tip-btn">
+      ❤️&ensp;Ủng Hộ Tác Giả
+      <span class="tip-cnt">118 lượt</span>
+    </button>
+    <div class="tip-avatars">
+      <div class="tip-av" style="background:linear-gradient(135deg,#e91e63,#ff5722)">🌸</div>
+      <div class="tip-av" style="background:linear-gradient(135deg,#1565c0,#0288d1)">🌊</div>
+      <div class="tip-av" style="background:linear-gradient(135deg,#b8860b,#f9a825)">⚡</div>
+      <div class="tip-av" style="background:linear-gradient(135deg,#2e7d32,#66bb6a)">🍀</div>
+      <div class="tip-av" style="background:linear-gradient(135deg,#6a1b9a,#ab47bc)">✨</div>
+    </div>
+    <button class="scan-btn">📱&ensp;Quét QR, tiếp tục đọc trên điện thoại</button>
+  </div>
+
+  <!-- CHAPTER NAVIGATION -->
+  <div class="ch-nav">
+    <a href="story-demo.html">☰&ensp;Mục Lục</a>
+    <a href="#" class="next">Chương 2: Bữa Cơm Khinh Bỉ&ensp;→</a>
+  </div>
+
+</div><!-- /reader-wrap -->
+
+<script>
+  // ── SCROLL TO TOP BUTTON ──
+  const toTop = document.getElementById('to-top');
+  window.addEventListener('scroll', () => {
+    toTop.style.display = window.scrollY > 400 ? 'flex' : 'none';
+  });
+  toTop.addEventListener('click', e => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ── NIGHT MODE ──
+  const nightBtn = document.getElementById('night-btn');
+  nightBtn.addEventListener('click', e => {
+    e.preventDefault();
+    document.body.classList.toggle('night');
+    nightBtn.classList.toggle('active', document.body.classList.contains('night'));
+  });
+
+  // ── SETTINGS PANEL ──
+  const settingsBtn = document.getElementById('settings-btn');
+  const settingsPanel = document.getElementById('settings-panel');
+  settingsBtn.addEventListener('click', e => {
+    e.preventDefault();
+    settingsPanel.classList.toggle('open');
+    settingsBtn.classList.toggle('active', settingsPanel.classList.contains('open'));
+  });
+  document.addEventListener('click', e => {
+    if (!settingsPanel.contains(e.target) && e.target !== settingsBtn && !settingsBtn.contains(e.target)) {
+      settingsPanel.classList.remove('open');
+      settingsBtn.classList.remove('active');
+    }
+  });
+
+  // ── FONT SIZE ──
+  const body = document.getElementById('ch-body');
+  const fontSizes = { 'fs-sm': '15px', 'fs-md': '17px', 'fs-lg': '20px' };
+  Object.keys(fontSizes).forEach(id => {
+    document.getElementById(id).addEventListener('click', () => {
+      body.style.fontSize = fontSizes[id];
+      ['fs-sm','fs-md','fs-lg'].forEach(i => document.getElementById(i).classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    });
+  });
+
+  // ── LINE HEIGHT ──
+  const lineHeights = { 'lh-tight': '1.7', 'lh-normal': '2', 'lh-loose': '2.4' };
+  Object.keys(lineHeights).forEach(id => {
+    document.getElementById(id).addEventListener('click', () => {
+      body.style.lineHeight = lineHeights[id];
+      ['lh-tight','lh-normal','lh-loose'].forEach(i => document.getElementById(i).classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>

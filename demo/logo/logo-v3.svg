@@ -1,0 +1,107 @@
+<svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    logo-v3: Triện ấn "CAM DIA" phong cách mộc bản
+    Bố cục 2 cột × 3 hàng — đọc từ trên xuống như chữ Nho:
+      Cột trái : C · A · M
+      Cột phải : D · I · A
+  -->
+  <defs>
+
+    <!-- Hiệu ứng mộc bản: dịch chuyển nhẹ để mô phỏng nét in khắc gỗ -->
+    <filter id="woodblock" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="turbulence" baseFrequency="0.042" numOctaves="4" seed="11" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.4"
+                         xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+
+    <!-- Nền dầy hơn: nhiễu fractal để tạo cảm giác giấy/vải cổ -->
+    <filter id="paper" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="3"
+                    stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="matrix"
+        values="0 0 0 0 0.1
+                0 0 0 0 0
+                0 0 0 0 0
+                0 0 0 0.12 0" result="tint"/>
+      <feBlend in="SourceGraphic" in2="tint" mode="multiply"/>
+    </filter>
+
+    <!-- Gradient nền: ấm ở giữa, sẫm ở rìa — giống mực triện thật -->
+    <radialGradient id="bg" cx="50%" cy="48%" r="64%">
+      <stop offset="0%"   stop-color="#9b1414"/>
+      <stop offset="100%" stop-color="#650b0b"/>
+    </radialGradient>
+
+    <!-- Hoa văn kim cương nhỏ trên nền (nền vải/lụa cổ) -->
+    <pattern id="diamond" width="13" height="13" patternUnits="userSpaceOnUse">
+      <path d="M6.5 1 L12 6.5 L6.5 12 L1 6.5 Z"
+            fill="none" stroke="rgba(255,255,255,0.042)" stroke-width="0.55"/>
+    </pattern>
+
+  </defs>
+
+  <!-- ── NỀN ── -->
+  <rect width="120" height="120" rx="11" fill="url(#bg)"/>
+  <rect width="120" height="120" rx="11" fill="url(#diamond)"/>
+  <rect width="120" height="120" rx="11" filter="url(#paper)" fill="rgba(0,0,0,0)"/>
+
+  <!-- ── KHUNG VIỀN NGOÀI (nét thô, mộc bản) ── -->
+  <rect x="5.5" y="5.5" width="109" height="109" rx="8"
+        fill="none" stroke="#c49038" stroke-width="4"
+        stroke-linecap="round" filter="url(#woodblock)"/>
+
+  <!-- ── KHUNG VIỀN TRONG (khung đôi — triện ấn truyền thống) ── -->
+  <rect x="10" y="10" width="100" height="100" rx="5"
+        fill="none" stroke="#c49038" stroke-width="1.2"
+        filter="url(#woodblock)"/>
+
+  <!-- ── ĐƯỜNG PHÂN CÁCH TRUNG TÂM (ngăn 2 cột) ── -->
+  <line x1="60" y1="14" x2="60" y2="106"
+        stroke="rgba(196,144,56,0.25)" stroke-width="1"
+        filter="url(#woodblock)"/>
+
+  <!-- ── CỘT TRÁI : C · A · M ── -->
+  <text x="32" y="32"
+        text-anchor="middle" dominant-baseline="central"
+        fill="#c49038"
+        font-family="Impact, 'Arial Black', Arial, sans-serif"
+        font-size="28" font-weight="900"
+        filter="url(#woodblock)">C</text>
+
+  <text x="32" y="60"
+        text-anchor="middle" dominant-baseline="central"
+        fill="#c49038"
+        font-family="Impact, 'Arial Black', Arial, sans-serif"
+        font-size="28" font-weight="900"
+        filter="url(#woodblock)">A</text>
+
+  <text x="32" y="88"
+        text-anchor="middle" dominant-baseline="central"
+        fill="#c49038"
+        font-family="Impact, 'Arial Black', Arial, sans-serif"
+        font-size="28" font-weight="900"
+        filter="url(#woodblock)">M</text>
+
+  <!-- ── CỘT PHẢI : D · I · A ── -->
+  <text x="88" y="32"
+        text-anchor="middle" dominant-baseline="central"
+        fill="#c49038"
+        font-family="Impact, 'Arial Black', Arial, sans-serif"
+        font-size="28" font-weight="900"
+        filter="url(#woodblock)">D</text>
+
+  <text x="88" y="60"
+        text-anchor="middle" dominant-baseline="central"
+        fill="#c49038"
+        font-family="Impact, 'Arial Black', Arial, sans-serif"
+        font-size="28" font-weight="900"
+        filter="url(#woodblock)">I</text>
+
+  <text x="88" y="88"
+        text-anchor="middle" dominant-baseline="central"
+        fill="#c49038"
+        font-family="Impact, 'Arial Black', Arial, sans-serif"
+        font-size="28" font-weight="900"
+        filter="url(#woodblock)">A</text>
+
+</svg>
