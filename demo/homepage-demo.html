@@ -1,7 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
+  <script>if(/Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){location.replace('mobile/homepage-demo.html');}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cấm Địa – Đọc Truyện Online Miễn Phí</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -249,6 +250,7 @@
 </head>
 <body>
 
+
 <!-- TOP BAR -->
 <div class="top-bar">
   <div class="w">
@@ -284,8 +286,8 @@
     </div>
     <div class="search-wrap">
       <div class="search-bar">
-        <input type="text" placeholder="Nhập tên truyện, tác giả, thể loại..." />
-        <button>🔍 Tìm kiếm</button>
+        <input type="text" id="main-search-input" placeholder="Nhập tên truyện, tác giả, thể loại..." />
+        <button id="main-search-btn">🔍 Tìm kiếm</button>
       </div>
     </div>
     <div class="header-actions">
@@ -300,17 +302,17 @@
 <nav class="genre-nav">
   <div class="w">
     <a href="#" class="active">Trang chủ</a>
-    <a href="#">Tiên Hiệp</a>
-    <a href="#">Kiếm Hiệp</a>
-    <a href="#">Ngôn Tình</a>
-    <a href="#">Đam Mỹ</a>
-    <a href="#">Huyền Huyễn</a>
-    <a href="#">Đô Thị</a>
-    <a href="#">Xuyên Không</a>
-    <a href="#">Trọng Sinh</a>
-    <a href="#">Hệ Thống</a>
-    <a href="#">Lịch Sử</a>
-    <a href="#">Võng Du</a>
+    <a href="genre-demo.html?g=tien-hiep">Tiên Hiệp</a>
+    <a href="genre-demo.html?g=kiem-hiep">Kiếm Hiệp</a>
+    <a href="genre-demo.html?g=ngon-tinh">Ngôn Tình</a>
+    <a href="genre-demo.html?g=dam-my">Đam Mỹ</a>
+    <a href="genre-demo.html?g=huyen-huyen">Huyền Huyễn</a>
+    <a href="genre-demo.html?g=do-thi">Đô Thị</a>
+    <a href="genre-demo.html?g=xuyen-khong">Xuyên Không</a>
+    <a href="genre-demo.html?g=trong-sinh">Trọng Sinh</a>
+    <a href="genre-demo.html?g=he-thong">Hệ Thống</a>
+    <a href="genre-demo.html?g=lich-su">Lịch Sử</a>
+    <a href="genre-demo.html?g=vong-du">Võng Du</a>
     <a href="#">Truyện Full</a>
     <a href="#">Truyện Hot</a>
     <a href="#" class="genre-more">≡ Tất cả thể loại</a>
@@ -787,6 +789,18 @@
       });
     });
   });
+
+  // Search redirect
+  function doSearch() {
+    const q = document.getElementById('main-search-input').value.trim();
+    const dest = 'search-demo.html' + (q ? '?q=' + encodeURIComponent(q) : '');
+    window.location.href = dest;
+  }
+  document.getElementById('main-search-btn').addEventListener('click', doSearch);
+  document.getElementById('main-search-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch();
+  });
 </script>
+
 </body>
 </html>

@@ -1,7 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
+  <script>if(/Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){location.replace('mobile/chapter-demo.html');}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ch.1: Chàng Rể Ăn Bám – Chàng Rể Chiến Thần – Cấm Địa</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -632,7 +633,15 @@
       document.getElementById(id).classList.add('active');
     });
   });
+
+  // ── MOBILE NIGHT BUTTON ──
+  document.getElementById('m-night-btn').addEventListener('click', e => {
+    e.preventDefault();
+    document.body.classList.toggle('night');
+    nightBtn.classList.toggle('active', document.body.classList.contains('night'));
+  });
 </script>
+
 
 </body>
 </html>
