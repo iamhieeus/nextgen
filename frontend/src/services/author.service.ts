@@ -14,7 +14,7 @@ export type AuthorStory = {
   viewCount: string
   synopsis: string
   tags: string[]
-  cover: { bg: string; emoji: string }
+  cover: { bg: string; emoji: string; image?: string }
   href: string
 }
 
@@ -34,12 +34,6 @@ export type AuthorDetail = {
   stories: AuthorStory[]
 }
 
-const STATUS_LABEL: Record<string, string> = {
-  ONGOING:   "Đang ra",
-  COMPLETED: "Hoàn thành",
-  HIATUS:    "Tạm dừng",
-  DROPPED:   "Đã drop",
-}
 
 export async function getAuthorDetail(id: number): Promise<AuthorDetail | null> {
   const author = await prisma.author.findUnique({
