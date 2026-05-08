@@ -1,0 +1,308 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum StoryStatus {
+  ONGOING
+  COMPLETED
+  HIATUS
+  DROPPED
+}
+
+model Category {
+  id              Int             @id @default(autoincrement())
+  name            String          @unique
+  slug            String          @unique
+  icon            String          @default("")
+  count           String          @default("")
+  sortOrder       Int             @default(0) @map("sort_order")
+  stories         Story[]
+  storyCategories StoryCategory[]
+
+  @@map("category")
+}
+
+model Author {
+  id         Int      @id @default(autoincrement())
+  penname    String   @unique
+  realname   String   @default("")
+  email      String   @default("")
+  bio        String   @default("") @db.Text
+  initial    String   @default("")
+  color      String   @default("#e5353e")
+  role       String   @default("AUTHOR")
+  isActive   Boolean  @default(true) @map("is_active")
+  viewCount  String   @default("0") @map("view_count")
+  facebook   String   @default("")
+  twitter    String   @default("")
+  website    String   @default("")
+  joinedAt   DateTime @default(now()) @map("joined_at")
+  stories    Story[]
+
+  @@map("author")
+}
+
+model Story {
+  id             Int            @id @default(autoincrement())
+  title          String
+  slug           String         @unique
+  author         String
+  authorId       Int?           @map("author_id")
+  authorRel      Author?        @relation(fields: [authorId], references: [id])
+  synopsis       String         @db.Text
+  coverBg        String         @default("") @map("cover_bg")
+  coverEmoji     String         @default("") @map("cover_emoji")
+  coverImage     String         @default("") @map("cover_image")
+  status         StoryStatus    @default(ONGOING)
+  isFeatured     Boolean        @default(false) @map("is_featured")
+  viewCount      String         @default("0") @map("view_count")
+  chapterCount   Int            @default(0) @map("chapter_count")
+  wordCount      String         @default("") @map("word_count")
+  ratingAvg      Float          @default(0) @map("rating_avg")
+  ratingCount    Int            @default(0) @map("rating_count")
+  bookmarkCount  String         @default("0") @map("bookmark_count")
+  updateSchedule String         @default("") @map("update_schedule")
+  categoryId      Int             @map("category_id")
+  category        Category        @relation(fields: [categoryId], references: [id])
+  chapters        Chapter[]
+  tags            StoryTag[]
+  storyRankings   StoryRanking[]
+  storyCategories StoryCategory[]
+  volumes        Volume[]
+  comments       Comment[]
+  ratings        Rating[]
+  similarTo      SimilarStory[] @relation("story")
+  similarFrom    SimilarStory[] @relation("similar")
+
+  @@index([categoryId], map: "idx_story_category")
+  @@index([authorId],   map: "idx_story_author")
+  @@index([isFeatured], map: "idx_story_featured")
+  @@index([status],     map: "idx_story_status")
+  @@map("story")
+}
+
+model StoryTag {
+  id      Int    @id @default(autoincrement())
+  storyId Int    @map("story_id")
+  label   String
+  story   Story  @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  @@index([storyId], map: "idx_story_tag")
+  @@map("story_tag")
+}
+
+model SimilarStory {
+  storyId   Int   @map("story_id")
+  similarId Int   @map("similar_id")
+  story     Story @relation("story", fields: [storyId], references: [id], onDelete: Cascade)
+  similar   Story @relation("similar", fields: [similarId], references: [id], onDelete: Cascade)
+
+  @@id([storyId, similarId])
+  @@map("similar_story")
+}
+
+model StoryCategory {
+  storyId    Int      @map("story_id")
+  categoryId Int      @map("category_id")
+  story      Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([storyId, categoryId])
+  @@index([storyId],    map: "idx_story_category_story")
+  @@index([categoryId], map: "idx_story_category_cat")
+  @@map("story_category")
+}
+
+model Volume {
+  id          Int       @id @default(autoincrement())
+  storyId     Int       @map("story_id")
+  name        String
+  range       String
+  sortOrder   Int       @default(0) @map("sort_order")
+  defaultOpen Boolean   @default(false) @map("default_open")
+  story       Story     @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  chapters    Chapter[]
+
+  @@index([storyId], map: "idx_volume_story")
+  @@map("volume")
+}
+
+model Chapter {
+  id          Int                @id @default(autoincrement())
+  storyId     Int                @map("story_id")
+  volumeId    Int?               @map("volume_id")
+  chapterNo   Int                @map("chapter_no")
+  title       String
+  wordCount   String             @default("") @map("word_count")
+  isFree      Boolean            @default(true) @map("is_free")
+  isPublished Boolean            @default(true) @map("is_published")
+  viewCount   String             @default("0") @map("view_count")
+  publishedAt DateTime           @default(now()) @map("published_at")
+  story       Story              @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  volume      Volume?            @relation(fields: [volumeId], references: [id])
+  paragraphs  ChapterParagraph[]
+  comments    Comment[]
+
+  @@unique([storyId, chapterNo])
+  @@index([storyId], map: "idx_chapter_story")
+  @@map("chapter")
+}
+
+model ChapterParagraph {
+  id           Int     @id @default(autoincrement())
+  chapterId    Int     @map("chapter_id")
+  sortOrder    Int     @map("sort_order")
+  type         String  @default("normal")
+  text         String  @db.Text
+  commentCount Int     @default(0) @map("comment_count")
+  chapter      Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  @@index([chapterId], map: "idx_para_chapter")
+  @@map("chapter_paragraph")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  storyId   Int?     @map("story_id")
+  chapterId Int?     @map("chapter_id")
+  initial   String
+  avatarBg  String   @map("avatar_bg")
+  name      String
+  badge     String?
+  text      String   @db.Text
+  likes     Int      @default(0)
+  replies   Int      @default(0)
+  liked     Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  story     Story?   @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  @@index([storyId], map: "idx_comment_story")
+  @@index([chapterId], map: "idx_comment_chapter")
+  @@map("comment")
+}
+
+model Rating {
+  id      Int    @id @default(autoincrement())
+  storyId Int    @map("story_id")
+  star    String
+  pct     Int
+  count   Int
+  story   Story  @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  @@index([storyId], map: "idx_rating_story")
+  @@map("rating")
+}
+
+model StoryRanking {
+  id        Int    @id @default(autoincrement())
+  storyId   Int    @map("story_id")
+  label     String
+  rank      String
+  icon      String @default("")
+  rankClass String @default("") @map("rank_class")
+  story     Story  @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  @@index([storyId], map: "idx_story_ranking")
+  @@map("story_ranking")
+}
+
+model RankList {
+  id    Int    @id @default(autoincrement())
+  type  String
+  title String
+  genre String
+
+  @@index([type], map: "idx_ranklist_type")
+  @@map("rank_list")
+}
+
+model Slide {
+  id        Int        @id @default(autoincrement())
+  title     String
+  desc      String     @db.Text
+  author    String
+  chapters  String
+  views     String
+  bg        String
+  emoji     String
+  sortOrder Int        @default(0) @map("sort_order")
+  tags      SlideTag[]
+
+  @@map("slide")
+}
+
+model SlideTag {
+  id      Int    @id @default(autoincrement())
+  slideId Int    @map("slide_id")
+  label   String
+  color   String @default("")
+  slide   Slide  @relation(fields: [slideId], references: [id], onDelete: Cascade)
+
+  @@map("slide_tag")
+}
+
+model HotStory {
+  id       Int    @id @default(autoincrement())
+  rank     Int
+  title    String
+  genres   String
+  chapters String
+  bg       String
+  emoji    String
+  href     String @default("")
+
+  @@map("hot_story")
+}
+
+model UpdatedStory {
+  id            Int     @id @default(autoincrement())
+  title         String
+  latestChapter String  @map("latest_chapter")
+  latestTitle   String  @map("latest_title")
+  time          String
+  coverBg       String  @map("cover_bg")
+  coverEmoji    String  @map("cover_emoji")
+  isNew         Boolean @default(false) @map("is_new")
+  sortOrder     Int     @default(0) @map("sort_order")
+
+  @@map("updated_story")
+}
+
+model CompletedStory {
+  id         Int    @id @default(autoincrement())
+  title      String
+  genreInfo  String @map("genre_info")
+  coverBg    String @map("cover_bg")
+  coverEmoji String @map("cover_emoji")
+  sortOrder  Int    @default(0) @map("sort_order")
+
+  @@map("completed_story")
+}
+
+model SidebarTopStory {
+  id         Int    @id @default(autoincrement())
+  rank       Int
+  title      String
+  sub        String
+  coverBg    String @map("cover_bg")
+  coverEmoji String @map("cover_emoji")
+
+  @@map("sidebar_top_story")
+}
+
+model FeaturedAuthor {
+  id      Int    @id @default(autoincrement())
+  rank    Int
+  name    String
+  sub     String
+  coverBg String @map("cover_bg")
+
+  @@map("featured_author")
+}

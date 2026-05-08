@@ -1,0 +1,55 @@
+export type ChapterPara = {
+  type: 'normal' | 'keyword' | 'divider' | 'ps'
+  text: string
+  comments?: number
+}
+
+export const chapterMock = {
+  storyTitle: 'Chàng Rể Chiến Thần',
+  author: 'Tiếu Ngạo Dư Sinh',
+  chapterNo: 1,
+  chapterTitle: 'Chàng Rể Ăn Bám',
+  wordCount: '4.687',
+  date: '28/02/2023 23:01',
+  commentCount: 302,
+  hotCommentCount: 1766,
+  cover: { bg: 'linear-gradient(135deg,#7f0000,#c62828)', emoji: '🌹' },
+  publishedDate: '28/02/2023',
+  genre: 'Ngôn Tình',
+  totalWords: '18.3M',
+  readerCount: '13.48 vạn',
+  prevChapter: null as null | { no: number; title: string },
+  nextChapter: { no: 2, title: 'Bữa Cơm Khinh Bỉ' },
+  authorNote: 'Mình mới bắt đầu bộ này, anh em đọc thấy hay nhớ để lại bình luận động viên mình nhé! Mỗi ngày mình cố gắng ra ít nhất 2 chương, anh em yên tâm theo dõi. Cảm ơn anh em đã ghé đọc! 📚',
+  tipCount: 118,
+  tipAvatars: [
+    { bg: 'linear-gradient(135deg,#e91e63,#ff5722)', emoji: '🌸' },
+    { bg: 'linear-gradient(135deg,#1565c0,#0288d1)', emoji: '🌊' },
+    { bg: 'linear-gradient(135deg,#b8860b,#f9a825)', emoji: '⚡' },
+    { bg: 'linear-gradient(135deg,#2e7d32,#66bb6a)', emoji: '🍀' },
+    { bg: 'linear-gradient(135deg,#6a1b9a,#ab47bc)', emoji: '✨' },
+  ],
+  paragraphs: [
+    { type: 'normal', text: 'Căn phòng tối tăm ở cuối hành lang nhà họ Trần — nơi người ta thường gọi bằng cái tên mỉa mai là "phòng ở nhờ" — chỉ rộng vỏn vẹn mười mét vuông. Một chiếc giường gỗ cũ, một bàn học bong tróc sơn, một cửa sổ nhỏ nhìn thẳng ra bức tường xi măng xám xịt. Lâm Phong ngồi đó, lặng thinh như tượng đá.', comments: 97 },
+    { type: 'normal', text: 'Bên ngoài phòng khách, tiếng chén chạm nhau lanh canh, tiếng cười nói rôm rả, mùi rượu ngoại thoang thoảng theo từng cơn gió. Hôm nay là sinh nhật lần thứ năm mươi của nhạc phụ — ông Trần Đức Thịnh. Đại gia đình họ Trần tụ hội đông đủ từ sáng sớm, trừ chàng rể Lâm Phong.', comments: 43 },
+    { type: 'normal', text: '"Ông anh rể nhà mày đâu rồi, Ngọc Hà? Cưới về ba năm mà không kiếm được một xu, hôm nay sinh nhật bố vợ cũng không thấy mặt — ăn hại quá vậy!"', comments: 156 },
+    { type: 'normal', text: 'Đó là giọng Trần Đức Minh — em trai vợ anh — vừa nói vừa cười, không thèm hạ giọng. Tiếng cười nhạo theo sau câu đó vang khắp phòng khách. Lâm Phong nghe hết, mà không nhúc nhích.', comments: 28 },
+    { type: 'normal', text: 'Ba năm. Anh đã nghe quen những lời như vậy từ lâu rồi.', comments: 212 },
+    { type: 'normal', text: 'Anh đã quen với những ánh mắt khinh miệt, quen với việc bị phân công căn phòng tệ nhất, quen với cái cảm giác như một bóng ma vô hình trong căn nhà xa lạ này. Anh chọn im lặng — bởi vì có lý do để anh im lặng. Một lý do mà chưa đến lúc nói ra.', comments: 67 },
+    { type: 'normal', text: 'Điện thoại trong túi quần anh rung lên. Một tin nhắn, từ số máy lạ.', comments: 89 },
+    { type: 'keyword', text: '«THIẾT HUYẾT QUÂN ĐOÀN — THỐNG SOÁI YÊU CẦU TRỞ VỀ. TÌNH HUỐNG KHẨN CẤP.»', comments: 302 },
+    { type: 'normal', text: 'Lâm Phong đọc tin nhắn đó. Đọc một lần. Rồi khóa màn hình lại.', comments: 44 },
+    { type: 'normal', text: 'Anh đứng dậy, bước đến cửa sổ. Bên ngoài là phố xá Giang Thành náo nhiệt, xe cộ tấp nập như mọi ngày. Đây là thành phố anh đã sống ba năm qua trong vỏ bọc của người chồng vô dụng, kẻ ăn bám không có gì để tự hào.', comments: 118 },
+    { type: 'normal', text: 'Nhưng trước cái ngày anh chấp nhận hôn ước theo lời trăng trối của người thầy quá cố — trước tất cả điều đó — anh là ai?', comments: 234 },
+    { type: 'normal', text: 'Anh là Lâm Phong. Thống Soái Thiết Huyết — người đàn ông mà mười sáu quốc gia phải kiêng dè, mà những kẻ trong bóng tối chỉ nhắc đến tên cũng phải run. Năm năm chinh chiến, ba năm ẩn mình. Tất cả đều có mục đích.', comments: 567 },
+    { type: 'normal', text: 'Anh nhìn vào hình phản chiếu của mình trên mặt kính cửa sổ. Người đàn ông ba mươi tuổi với khuôn mặt bình thường đến mức không ai buồn nhìn lần hai. Vỏ bọc hoàn hảo nhất.', comments: 88 },
+    { type: 'normal', text: 'Cánh cửa phòng bị đẩy mạnh ra — không gõ. Trần Đức Minh bước vào, mùi rượu nồng nặc, ánh mắt trịch thượng quen thuộc: "Ê, Lâm Phong! Ra ngoài bưng thức ăn đi. Làm ơn có ích một chút không được à, hay suốt đời muốn sống bám nhà người ta?"', comments: 143 },
+    { type: 'normal', text: 'Lâm Phong quay đầu nhìn Đức Minh. Chỉ một cái nhìn, không nói gì.', comments: 72 },
+    { type: 'normal', text: 'Nhưng cái nhìn đó khiến Đức Minh — dù đang ngà ngà say — tự nhiên khựng lại. Chân anh ta không bước thêm được nữa. Trong đôi mắt hẹp của người đàn ông vẫn luôn cúi đầu kia thoáng qua một thứ gì đó mà anh ta chưa từng thấy bao giờ. Lạnh. Sâu. Như ánh mắt của một con thú đã ngủ đông đủ lâu và chuẩn bị thức dậy.', comments: 289 },
+    { type: 'normal', text: '"Tôi hiểu rồi." Lâm Phong nói, giọng bình thản như gió. Anh bước qua cửa, không cần nhìn Đức Minh thêm lần nào.', comments: 56 },
+    { type: 'normal', text: 'Nhưng khi bước ra ngoài hành lang, anh lặng lẽ gõ một tin nhắn hồi âm, chỉ hai chữ.', comments: 198 },
+    { type: 'keyword', text: '«Tôi về.»', comments: 421 },
+    { type: 'divider', text: '— · —' },
+    { type: 'ps', text: 'ps: Anh em ủng hộ mình với nhé! Nếu thấy hay, thả tim và theo dõi để không bỏ lỡ chương mới. Cảm ơn anh em rất nhiều 🙏' },
+  ] as ChapterPara[],
+}
