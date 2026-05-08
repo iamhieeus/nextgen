@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getSlides, getHotList, getUpdatedList, getRecommendations, getCategories, getRankings } from "@/services/home.service"
 import MobileHomeClient from "./MobileHomeClient"
 

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getCategories } from "@/services/home.service"
 import { searchStories } from "@/services/search.service"
 import GenreClient from "./GenreClient"

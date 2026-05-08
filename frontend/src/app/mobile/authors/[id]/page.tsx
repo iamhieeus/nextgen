@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { notFound } from "next/navigation"
 import { getAuthorDetail } from "@/services/author.service"
 import AuthorClient from "./AuthorClient"

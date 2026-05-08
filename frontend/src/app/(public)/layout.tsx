@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { Suspense } from "react"
 import TopBar from "@/components/layout/TopBar"
 import SiteHeader from "@/components/layout/SiteHeader"
